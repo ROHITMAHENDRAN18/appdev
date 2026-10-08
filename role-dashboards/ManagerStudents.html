@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORBIT Platform</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="shared-app.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-logo">O</div>
+            <div><strong>ORBIT</strong><small>MANAGER PORTAL</small></div>
+        </div>
+        <div class="nav-label">MANAGEMENT</div>
+        <nav>
+            <a href="ManagerDashboard.html">🏠 <span>Dashboard</span></a>
+            <a href="ManagerApplications.html">📄 <span>Applications</span></a>
+            <a href="ManagerStudents.html" class="active">👥 <span>Students</span></a>
+            <a href="ManagerInternships.html">💼 <span>Internships</span></a>
+            <a href="ManagerReports.html">📊 <span>Reports</span></a>
+            <a href="ManagerNotifications.html">🔔 <span>Notifications</span></a>
+        </nav>
+        <div class="sidebar-bottom">
+            <a href="RoleDashboards.html" class="portal-link">← Role Portal</a>
+        </div>
+    </aside>
+
+    <main class="dashboard-main">
+        <header class="dashboard-topbar">
+            <div class="dashboard-title">
+                <h1>Student Roster</h1>
+                <p>Monitor student enrollment, internship placement status, and learning tracks.</p>
+            </div>
+            <div class="role-badge">🧑‍💼 MANAGER</div>
+        </header>
+
+        <section class="page-toolbar">
+            <div class="toolbar-filters">
+                <input type="text" id="searchStudent" class="search-input" placeholder="Search student name..." oninput="renderStudents()">
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Email</th>
+                            <th>Applications</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentsTableBody"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+function renderStudents() {
+    const users = JSON.parse(localStorage.getItem(ORBIT_KEYS.USERS)) || [];
+    const apps = JSON.parse(localStorage.getItem(ORBIT_KEYS.APPLICATIONS)) || [];
+    const query = document.getElementById('searchStudent').value.toLowerCase();
+
+    const students = users.filter(u => u.role === 'Student' && u.name.toLowerCase().includes(query));
+    const tbody = document.getElementById('studentsTableBody');
+
+    tbody.innerHTML = students.map(s => {
+        const studentApps = apps.filter(a => a.studentName === s.name || a.studentEmail === s.email);
+        const activeApp = studentApps.find(a => a.status === 'Selected') || studentApps[0];
+        return `
+            <tr>
+                <td class="person-cell">
+                    <div class="student-avatar small">${s.name.substring(0,2).toUpperCase()}</div>
+                    <div><span class="cell-title">${s.name}</span></div>
+                </td>
+                <td>${s.email}</td>
+                <td>${studentApps.length} Applied</td>
+                <td><span class="status status-info">${activeApp ? activeApp.status : 'Idle'}</span></td>
+            </tr>
+        `;
+    }).join('');
+}
+document.addEventListener('DOMContentLoaded', renderStudents);
+</script>
+</body>
+</html>

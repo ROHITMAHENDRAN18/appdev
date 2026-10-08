@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORBIT Platform</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="shared-app.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-logo">O</div>
+            <div><strong>ORBIT</strong><small>RECRUITER PORTAL</small></div>
+        </div>
+        <div class="nav-label">RECRUITMENT</div>
+        <nav>
+            <a href="RecruiterDashboard.html">🏠 <span>Dashboard</span></a>
+            <a href="RecruiterJobs.html">💼 <span>Internships</span></a>
+            <a href="RecruiterApplications.html" class="active">📄 <span>Applicants</span></a>
+            <a href="RecruiterInterviews.html">📅 <span>Interviews</span></a>
+            <a href="RecruiterReports.html">📊 <span>Reports</span></a>
+            <a href="RecruiterNotifications.html">🔔 <span>Notifications</span></a>
+        </nav>
+        <div class="sidebar-bottom">
+            <a href="RoleDashboards.html" class="portal-link">← Role Portal</a>
+        </div>
+    </aside>
+
+    <main class="dashboard-main">
+        <header class="dashboard-topbar">
+            <div class="dashboard-title">
+                <h1>Candidate Applications</h1>
+                <p>Review applicant profiles, change statuses, and schedule interview rounds.</p>
+            </div>
+            <div class="role-badge">🏢 RECRUITER</div>
+        </header>
+
+        <section class="manager-applications" id="recruiterAppsContainer"></section>
+    </main>
+</div>
+
+<script>
+function renderRecruiterApps() {
+    const apps = JSON.parse(localStorage.getItem(ORBIT_KEYS.APPLICATIONS)) || [];
+    const container = document.getElementById('recruiterAppsContainer');
+
+    if(apps.length === 0) {
+        container.innerHTML = `<div class="empty-state"><div class="empty-icon">👥</div><h3>No Applicants Found</h3></div>`;
+        return;
+    }
+
+    container.innerHTML = apps.map(a => `
+        <article class="manager-application">
+            <div class="application-header">
+                <div class="student-info">
+                    <div class="student-avatar">${a.studentName.substring(0,2).toUpperCase()}</div>
+                    <div>
+                        <h3>${a.studentName}</h3>
+                        <p>CGPA: ${a.cgpa} • Email: ${a.studentEmail}</p>
+                    </div>
+                </div>
+                <span class="status ${a.status==='Selected'?'status-success':a.status==='Interview'?'status-warning':'status-info'}">${a.status}</span>
+            </div>
+            <div class="application-body">
+                <h2>${a.role} (${a.company})</h2>
+                <div class="skills">
+                    ${a.skills ? a.skills.map(s => `<span class="skill">${s}</span>`).join('') : ''}
+                </div>
+            </div>
+            <div class="application-footer">
+                <span class="application-id">${a.id}</span>
+                <div class="action-group">
+                    <button class="btn btn-secondary btn-sm" onclick="changeAppStatus('${a.id}', 'Shortlisted')">Shortlist</button>
+                    <button class="btn btn-primary btn-sm" onclick="changeAppStatus('${a.id}', 'Interview')">Schedule Interview</button>
+                    <button class="btn btn-success btn-sm" onclick="changeAppStatus('${a.id}', 'Selected')">Select</button>
+                    <button class="btn btn-danger btn-sm" onclick="changeAppStatus('${a.id}', 'Rejected')">Reject</button>
+                </div>
+            </div>
+        </article>
+    `).join('');
+}
+
+function changeAppStatus(appId, newStatus) {
+    let apps = JSON.parse(localStorage.getItem(ORBIT_KEYS.APPLICATIONS)) || [];
+    const idx = apps.findIndex(a => a.id === appId);
+    if(idx !== -1) {
+        apps[idx].status = newStatus;
+        if(newStatus === 'Interview' && !apps[idx].interviewDate) {
+            apps[idx].interviewDate = '2026-10-02 11:00 AM';
+        }
+        localStorage.setItem(ORBIT_KEYS.APPLICATIONS, JSON.stringify(apps));
+        showToast(`Candidate status changed to ${newStatus}`, 'success');
+        renderRecruiterApps();
+    }
+}
+document.addEventListener('DOMContentLoaded', renderRecruiterApps);
+</script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORBIT Platform</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="shared-app.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-logo">O</div>
+            <div><strong>ORBIT</strong><small>STUDENT PORTAL</small></div>
+        </div>
+        <div class="nav-label">MAIN MENU</div>
+        <nav>
+            <a href="StudentDashboard.html">🏠 <span>Dashboard</span></a>
+            <a href="StudentInternships.html">💼 <span>Find Internships</span></a>
+            <a href="StudentApplications.html" class="active">📄 <span>My Applications</span></a>
+            <a href="StudentTraining.html">📚 <span>My Training</span></a>
+            <a href="StudentNotifications.html">🔔 <span>Notifications</span></a>
+            <a href="StudentProfile.html">👤 <span>My Profile</span></a>
+        </nav>
+        <div class="sidebar-bottom">
+            <a href="RoleDashboards.html" class="portal-link">← Role Portal</a>
+        </div>
+    </aside>
+
+    <main class="dashboard-main">
+        <header class="dashboard-topbar">
+            <div class="dashboard-title">
+                <h1>My Applications</h1>
+                <p>Track recruitment pipeline stages and withdraw applications if needed.</p>
+            </div>
+            <div class="role-badge">🎓 STUDENT</div>
+        </header>
+
+        <section class="page-toolbar">
+            <div class="toolbar-filters">
+                <select id="statusFilter" class="filter-select" onchange="renderApplications()">
+                    <option value="all">All Statuses</option>
+                    <option value="Applied">Applied</option>
+                    <option value="Under Review">Under Review</option>
+                    <option value="Shortlisted">Shortlisted</option>
+                    <option value="Interview">Interview</option>
+                    <option value="Selected">Selected</option>
+                    <option value="Rejected">Rejected</option>
+                </select>
+            </div>
+            <div class="result-count">Total Applications: <strong id="appCount">0</strong></div>
+        </section>
+
+        <section id="applicationsContainer" class="manager-applications"></section>
+        <div id="emptyState" class="empty-state" style="display:none;">
+            <div class="empty-icon">📄</div>
+            <h3>No applications found</h3>
+            <p>You haven't submitted applications matching the active criteria.</p>
+            <a href="StudentInternships.html" class="btn btn-primary">Browse Internships</a>
+        </div>
+    </main>
+</div>
+
+<script>
+function renderApplications() {
+    const apps = JSON.parse(localStorage.getItem(ORBIT_KEYS.APPLICATIONS)) || [];
+    const profile = JSON.parse(localStorage.getItem(ORBIT_KEYS.PROFILE));
+    const filter = document.getElementById('statusFilter').value;
+
+    const myApps = apps.filter(a => (a.studentEmail === profile.email || a.studentName === profile.name) && (filter === 'all' || a.status === filter));
+
+    document.getElementById('appCount').textContent = myApps.length;
+    const container = document.getElementById('applicationsContainer');
+    const empty = document.getElementById('emptyState');
+
+    if (myApps.length === 0) {
+        container.style.display = 'none';
+        empty.style.display = 'block';
+        return;
+    }
+
+    container.style.display = 'grid';
+    empty.style.display = 'none';
+
+    container.innerHTML = myApps.map(a => `
+        <article class="manager-application">
+            <div class="application-header">
+                <div class="student-info">
+                    <div class="student-avatar">${a.company.substring(0,2).toUpperCase()}</div>
+                    <div>
+                        <h3>${a.role}</h3>
+                        <p>${a.company}</p>
+                    </div>
+                </div>
+                <span class="status ${a.status === 'Selected' ? 'status-success' : a.status === 'Interview' ? 'status-warning' : a.status === 'Rejected' ? 'status-danger' : 'status-info'}">${a.status}</span>
+            </div>
+            <div class="application-body">
+                <div class="application-meta">
+                    <span>📅 Applied: ${a.appliedDate}</span>
+                    <span>📍 Application Ref: ${a.id}</span>
+                    ${a.interviewDate ? `<span style="color:var(--cyan)">🗓 Interview: ${a.interviewDate}</span>` : ''}
+                </div>
+                <div class="steps">
+                    <div class="step ${['Applied','Under Review','Shortlisted','Interview','Selected'].includes(a.status)?'done':''}">Applied</div>
+                    <div class="step ${['Under Review','Shortlisted','Interview','Selected'].includes(a.status)?'done':''}">Under Review</div>
+                    <div class="step ${['Shortlisted','Interview','Selected'].includes(a.status)?'done':''}">Shortlisted</div>
+                    <div class="step ${['Interview','Selected'].includes(a.status)?'done':''}">Interview</div>
+                    <div class="step ${a.status==='Selected'?'done':a.status==='Rejected'?'failed':''}">Decision</div>
+                </div>
+            </div>
+            <div class="application-footer">
+                <span class="application-id">${a.id}</span>
+                <div class="action-group">
+                    ${a.status === 'Applied' ? `<button class="btn btn-danger btn-sm" onclick="withdrawApp('${a.id}')">Withdraw Application</button>` : ''}
+                </div>
+            </div>
+        </article>
+    `).join('');
+}
+
+function withdrawApp(id) {
+    if(!confirm('Are you sure you want to withdraw this application?')) return;
+    let apps = JSON.parse(localStorage.getItem(ORBIT_KEYS.APPLICATIONS)) || [];
+    apps = apps.filter(a => a.id !== id);
+    localStorage.setItem(ORBIT_KEYS.APPLICATIONS, JSON.stringify(apps));
+    showToast('Application withdrawn.', 'info');
+    renderApplications();
+}
+
+document.addEventListener('DOMContentLoaded', renderApplications);
+</script>
+</body>
+</html>

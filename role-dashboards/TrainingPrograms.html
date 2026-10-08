@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORBIT Platform</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="shared-app.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-logo">O</div>
+            <div><strong>ORBIT</strong><small>TRAINING PORTAL</small></div>
+        </div>
+        <div class="nav-label">COORDINATOR MENU</div>
+        <nav>
+            <a href="TrainingCoordinatorDashboard.html">🏠 <span>Dashboard</span></a>
+            <a href="TrainingPrograms.html" class="active">📚 <span>Programs</span></a>
+            <a href="TrainingAssignments.html">👥 <span>Assignments</span></a>
+            <a href="TrainingProgress.html">📈 <span>Progress Track</span></a>
+            <a href="TrainingCertificates.html">🏆 <span>Certificates</span></a>
+            <a href="TrainingReports.html">📊 <span>Reports</span></a>
+        </nav>
+        <div class="sidebar-bottom">
+            <a href="RoleDashboards.html" class="portal-link">← Role Portal</a>
+        </div>
+    </aside>
+
+    <main class="dashboard-main">
+        <header class="dashboard-topbar">
+            <div class="dashboard-title">
+                <h1>Training Programs</h1>
+                <p>Manage curriculum offerings and assigned instructors.</p>
+            </div>
+            <div class="role-badge">📚 COORDINATOR</div>
+        </header>
+
+        <section class="page-toolbar">
+            <button class="btn btn-primary" onclick="openCreateTrainingModal()">+ Create Training Program</button>
+        </section>
+
+        <section id="trainingsGrid" class="card-grid"></section>
+    </main>
+</div>
+
+<div id="trainingModal" class="modal-overlay" style="display:none;">
+    <div class="modal">
+        <div class="modal-header">
+            <h2>Create Training Program</h2>
+            <button class="modal-close" onclick="closeTrainingModal()">×</button>
+        </div>
+        <form onsubmit="saveTrainingProgram(event)" class="modal-body form-grid">
+            <div class="form-field full"><label>Program Name</label><input type="text" id="trName" required></div>
+            <div class="form-field"><label>Trainer / Instructor</label><input type="text" id="trTrainer" required></div>
+            <div class="form-field"><label>Duration</label><input type="text" id="trDuration" placeholder="e.g. 6 Weeks" required></div>
+            <div class="form-field"><label>Start Date</label><input type="date" id="trStart" required></div>
+            <div class="form-field"><label>End Date</label><input type="date" id="trEnd" required></div>
+            <div class="form-field full"><label>Skills Covered</label><input type="text" id="trSkills" required></div>
+            <div class="form-field full"><label>Description</label><textarea id="trDesc" required></textarea></div>
+            <div class="modal-footer full">
+                <button type="submit" class="btn btn-primary">Create Program</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function renderTrainings() {
+    const list = JSON.parse(localStorage.getItem(ORBIT_KEYS.TRAININGS)) || [];
+    const grid = document.getElementById('trainingsGrid');
+
+    grid.innerHTML = list.map(t => `
+        <article class="item-card">
+            <h3>${t.name}</h3>
+            <p class="internship-description">${t.description}</p>
+            <div class="internship-details">
+                <div class="detail-item"><span>Instructor</span><strong>${t.trainer}</strong></div>
+                <div class="detail-item"><span>Duration</span><strong>${t.duration}</strong></div>
+            </div>
+            <div class="card-footer">
+                <span class="status status-success">${t.status}</span>
+                <button class="btn btn-danger btn-sm" onclick="deleteTraining('${t.id}')">Delete</button>
+            </div>
+        </article>
+    `).join('');
+}
+
+function openCreateTrainingModal() { document.getElementById('trainingModal').style.display = 'grid'; }
+function closeTrainingModal() { document.getElementById('trainingModal').style.display = 'none'; }
+
+function saveTrainingProgram(e) {
+    e.preventDefault();
+    const list = JSON.parse(localStorage.getItem(ORBIT_KEYS.TRAININGS)) || [];
+    const newTr = {
+        id: 'TR-' + Math.floor(200 + Math.random()*800),
+        name: document.getElementById('trName').value,
+        trainer: document.getElementById('trTrainer').value,
+        duration: document.getElementById('trDuration').value,
+        startDate: document.getElementById('trStart').value,
+        endDate: document.getElementById('trEnd').value,
+        skills: document.getElementById('trSkills').value,
+        status: 'Active',
+        description: document.getElementById('trDesc').value
+    };
+    list.push(newTr);
+    localStorage.setItem(ORBIT_KEYS.TRAININGS, JSON.stringify(list));
+    showToast('Training program created!', 'success');
+    closeTrainingModal();
+    renderTrainings();
+}
+
+function deleteTraining(id) {
+    let list = JSON.parse(localStorage.getItem(ORBIT_KEYS.TRAININGS)) || [];
+    list = list.filter(t => t.id !== id);
+    localStorage.setItem(ORBIT_KEYS.TRAININGS, JSON.stringify(list));
+    showToast('Program removed', 'info');
+    renderTrainings();
+}
+
+document.addEventListener('DOMContentLoaded', renderTrainings);
+</script>
+</body>
+</html>

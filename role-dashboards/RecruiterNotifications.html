@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORBIT Platform</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="shared-app.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-logo">O</div>
+            <div><strong>ORBIT</strong><small>RECRUITER PORTAL</small></div>
+        </div>
+        <div class="nav-label">RECRUITMENT</div>
+        <nav>
+            <a href="RecruiterDashboard.html">🏠 <span>Dashboard</span></a>
+            <a href="RecruiterJobs.html">💼 <span>Internships</span></a>
+            <a href="RecruiterApplications.html">📄 <span>Applicants</span></a>
+            <a href="RecruiterInterviews.html">📅 <span>Interviews</span></a>
+            <a href="RecruiterReports.html">📊 <span>Reports</span></a>
+            <a href="RecruiterNotifications.html" class="active">🔔 <span>Notifications</span></a>
+        </nav>
+        <div class="sidebar-bottom">
+            <a href="RoleDashboards.html" class="portal-link">← Role Portal</a>
+        </div>
+    </aside>
+
+    <main class="dashboard-main">
+        <header class="dashboard-topbar">
+            <div class="dashboard-title">
+                <h1>Recruiter Notifications</h1>
+                <p>New application submissions and interview confirmations.</p>
+            </div>
+            <div class="role-badge">🏢 RECRUITER</div>
+        </header>
+
+        <section class="notification-list">
+            <div class="notification-item unread">
+                <div class="notification-icon">💼</div>
+                <div class="notification-content">
+                    <strong>New Applicant Registered</strong>
+                    <p>Rahul M submitted an application for AI / ML Intern.</p>
+                    <div class="notification-time">1 hour ago</div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+</body>
+</html>

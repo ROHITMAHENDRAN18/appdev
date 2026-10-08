@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORBIT Platform</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="shared-app.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-logo">O</div>
+            <div><strong>ORBIT</strong><small>MANAGER PORTAL</small></div>
+        </div>
+        <div class="nav-label">MANAGEMENT</div>
+        <nav>
+            <a href="ManagerDashboard.html">🏠 <span>Dashboard</span></a>
+            <a href="ManagerApplications.html">📄 <span>Applications</span></a>
+            <a href="ManagerStudents.html">👥 <span>Students</span></a>
+            <a href="ManagerInternships.html">💼 <span>Internships</span></a>
+            <a href="ManagerReports.html">📊 <span>Reports</span></a>
+            <a href="ManagerNotifications.html" class="active">🔔 <span>Notifications</span></a>
+        </nav>
+        <div class="sidebar-bottom">
+            <a href="RoleDashboards.html" class="portal-link">← Role Portal</a>
+        </div>
+    </aside>
+
+    <main class="dashboard-main">
+        <header class="dashboard-topbar">
+            <div class="dashboard-title">
+                <h1>Manager Alerts</h1>
+                <p>Application submissions, shortlist alerts, and student milestones.</p>
+            </div>
+            <div class="role-badge">🧑‍💼 MANAGER</div>
+        </header>
+
+        <section class="notification-list">
+            <div class="notification-item unread">
+                <div class="notification-icon">📄</div>
+                <div class="notification-content">
+                    <strong>New Application Received</strong>
+                    <p>Rahul M applied for AI / ML Intern at NovaTech Systems.</p>
+                    <div class="notification-time">10 mins ago</div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+</body>
+</html>

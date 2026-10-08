@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORBIT Platform</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="shared-app.js"></script>
+</head>
+
+
+<body>
+
+<div class="dashboard-layout">
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+
+            <div class="sidebar-logo">
+                O
+            </div>
+
+            <div>
+
+                <strong>
+                    ORBIT
+                </strong>
+
+                <small>
+                    RECRUITER PORTAL
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <div class="nav-label">
+            RECRUITER MENU
+        </div>
+
+
+        <nav>
+
+            <a href="RecruiterDashboard.html">
+                🏠
+                <span>Dashboard</span>
+            </a>
+
+            <a
+                href="RecruiterJobs.html"
+                class="active"
+            >
+                💼
+                <span>Internships</span>
+            </a>
+
+            <a href="#">
+                👨‍🎓
+                <span>Applicants</span>
+            </a>
+
+            <a href="#">
+                📅
+                <span>Interviews</span>
+            </a>
+
+            <a href="#">
+                📊
+                <span>Reports</span>
+            </a>
+
+            <a href="#">
+                🔔
+                <span>Notifications</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a
+                href="RoleDashboards.html"
+                class="portal-link"
+            >
+                ← Role Portal
+            </a>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- MAIN -->
+
+    <main class="dashboard-main">
+
+
+        <!-- HEADER -->
+
+        <header class="dashboard-topbar">
+
+            <div class="dashboard-title">
+
+                <h1>
+                    Internship Management
+                </h1>
+
+                <p>
+                    Create and manage internship opportunities
+                    for students.
+                </p>
+
+            </div>
+
+
+            <div class="role-badge">
+                🧑‍💻 RECRUITER
+            </div>
+
+        </header>
+
+
+
+        <!-- TOOLBAR -->
+
+        <section class="page-toolbar">
+
+            <div class="job-summary">
+
+                Total Openings:
+
+                <strong id="jobCount">
+                    3
+                </strong>
+
+            </div>
+
+
+            <button
+                class="create-btn"
+                onclick="openCreateModal()"
+            >
+                + Create Internship
+            </button>
+
+        </section>
+
+
+
+        <!-- JOBS -->
+
+        <section
+            class="jobs-grid"
+            id="jobsGrid"
+        >
+
+
+            <!-- JOB 1 -->
+
+            <article
+                class="job-card"
+                data-job-id="JOB-001"
+            >
+
+                <div class="job-header">
+
+                    <div class="job-company">
+
+                        <div class="company-logo">
+                            NT
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                NovaTech
+                            </h3>
+
+                            <p>
+                                Coimbatore
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <span
+                        class="job-status status-active"
+                    >
+                        Active
+                    </span>
+
+                </div>
+
+
+                <h2 class="job-title">
+                    AI / ML Intern
+                </h2>
+
+
+                <p class="job-description">
+                    Work on machine learning models,
+                    data processing and AI-powered
+                    applications.
+                </p>
+
+
+                <div class="job-meta">
+
+                    <span class="meta-item">
+                        📍 Coimbatore
+                    </span>
+
+                    <span class="meta-item">
+                        ⏱ 3 Months
+                    </span>
+
+                    <span class="meta-item">
+                        💰 ₹15,000/month
+                    </span>
+
+                </div>
+
+
+                <div class="skills">
+
+                    <span class="skill">
+                        Python
+                    </span>
+
+                    <span class="skill">
+                        Machine Learning
+                    </span>
+
+                    <span class="skill">
+                        TensorFlow
+                    </span>
+
+                    <span class="skill">
+                        SQL
+                    </span>
+
+                </div>
+
+
+                <div class="job-stats">
+
+                    <div class="stat-box">
+
+                        <span>
+                            Applicants
+                        </span>
+
+                        <strong>
+                            24
+                        </strong>
+
+                    </div>
+
+                    <div class="stat-box">
+
+                        <span>
+                            Posted
+                        </span>
+
+                        <strong>
+                            18 Sep
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="job-footer">
+
+                    <button
+                        class="job-btn edit-btn"
+                        onclick="editJob('JOB-001')"
+                    >
+                        Edit
+                    </button>
+
+                    <button
+                        class="job-btn applicants-btn"
+                        onclick="viewApplicants('JOB-001')"
+                    >
+                        Applicants
+                    </button>
+
+                    <button
+                        class="job-btn close-btn"
+                        onclick="closeJob(this, 'JOB-001')"
+                    >
+                        Close
+                    </button>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- JOB 2 -->
+
+            <article
+                class="job-card"
+                data-job-id="JOB-002"
+            >
+
+                <div class="job-header">
+
+                    <div class="job-company">
+
+                        <div class="company-logo">
+                            CW
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                CloudWorks
+                            </h3>
+
+                            <p>
+                                Bangalore
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <span
+                        class="job-status status-active"
+                    >
+                        Active
+                    </span>
+
+                </div>
+
+
+                <h2 class="job-title">
+                    Machine Learning Intern
+                </h2>
+
+
+                <p class="job-description">
+                    Build predictive models and
+                    production-ready machine learning
+                    pipelines.
+                </p>
+
+
+                <div class="job-meta">
+
+                    <span class="meta-item">
+                        📍 Bangalore
+                    </span>
+
+                    <span class="meta-item">
+                        ⏱ 6 Months
+                    </span>
+
+                    <span class="meta-item">
+                        💰 ₹20,000/month
+                    </span>
+
+                </div>
+
+
+                <div class="skills">
+
+                    <span class="skill">
+                        Python
+                    </span>
+
+                    <span class="skill">
+                        Scikit-learn
+                    </span>
+
+                    <span class="skill">
+                        Pandas
+                    </span>
+
+                    <span class="skill">
+                        SQL
+                    </span>
+
+                </div>
+
+
+                <div class="job-stats">
+
+                    <div class="stat-box">
+
+                        <span>
+                            Applicants
+                        </span>
+
+                        <strong>
+                            18
+                        </strong>
+
+                    </div>
+
+                    <div class="stat-box">
+
+                        <span>
+                            Posted
+                        </span>
+
+                        <strong>
+                            15 Sep
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="job-footer">
+
+                    <button
+                        class="job-btn edit-btn"
+                        onclick="editJob('JOB-002')"
+                    >
+                        Edit
+                    </button>
+
+                    <button
+                        class="job-btn applicants-btn"
+                        onclick="viewApplicants('JOB-002')"
+                    >
+                        Applicants
+                    </button>
+
+                    <button
+                        class="job-btn close-btn"
+                        onclick="closeJob(this, 'JOB-002')"
+                    >
+                        Close
+                    </button>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- JOB 3 -->
+
+            <article
+                class="job-card"
+                data-job-id="JOB-003"
+            >
+
+                <div class="job-header">
+
+                    <div class="job-company">
+
+                        <div class="company-logo">
+                            DS
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                DataSphere
+                            </h3>
+
+                            <p>
+                                Chennai
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <span
+                        class="job-status status-draft"
+                    >
+                        Draft
+                    </span>
+
+                </div>
+
+
+                <h2 class="job-title">
+                    Data Analyst Intern
+                </h2>
+
+
+                <p class="job-description">
+                    Analyze business data and create
+                    dashboards to support business
+                    decisions.
+                </p>
+
+
+                <div class="job-meta">
+
+                    <span class="meta-item">
+                        📍 Chennai
+                    </span>
+
+                    <span class="meta-item">
+                        ⏱ 4 Months
+                    </span>
+
+                    <span class="meta-item">
+                        💰 ₹12,000/month
+                    </span>
+
+                </div>
+
+
+                <div class="skills">
+
+                    <span class="skill">
+                        Python
+                    </span>
+
+                    <span class="skill">
+                        SQL
+                    </span>
+
+                    <span class="skill">
+                        Power BI
+                    </span>
+
+                </div>
+
+
+                <div class="job-stats">
+
+                    <div class="stat-box">
+
+                        <span>
+                            Applicants
+                        </span>
+
+                        <strong>
+                            0
+                        </strong>
+
+                    </div>
+
+                    <div class="stat-box">
+
+                        <span>
+                            Created
+                        </span>
+
+                        <strong>
+                            20 Sep
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="job-footer">
+
+                    <button
+                        class="job-btn edit-btn"
+                        onclick="editJob('JOB-003')"
+                    >
+                        Edit
+                    </button>
+
+                    <button
+                        class="job-btn applicants-btn"
+                        onclick="viewApplicants('JOB-003')"
+                    >
+                        Applicants
+                    </button>
+
+                    <button
+                        class="job-btn close-btn"
+                        onclick="closeJob(this, 'JOB-003')"
+                    >
+                        Delete
+                    </button>
+
+                </div>
+
+            </article>
+
+
+        </section>
+
+
+
+        <!-- NOTICE -->
+
+        <div class="notice">
+
+            <strong>Frontend Prototype:</strong>
+
+            Internship records are currently stored locally.
+            Later, recruiters will create and manage internship
+            records through the FastAPI backend and MongoDB.
+
+        </div>
+
+
+    </main>
+
+</div>
+
+
+
+<!-- CREATE MODAL -->
+
+<div
+    class="modal"
+    id="createModal"
+>
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+
+            <h2>
+                Create Internship
+            </h2>
+
+            <button
+                class="close-modal"
+                onclick="closeCreateModal()"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form
+            onsubmit="createJob(event)"
+        >
+
+            <div class="form-group">
+
+                <label>
+                    Internship Title
+                </label>
+
+                <input
+                    type="text"
+                    id="jobTitle"
+                    placeholder="Example: AI / ML Intern"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label>
+                        Company
+                    </label>
+
+                    <input
+                        type="text"
+                        id="jobCompany"
+                        placeholder="Company name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Location
+                    </label>
+
+                    <input
+                        type="text"
+                        id="jobLocation"
+                        placeholder="Coimbatore"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label>
+                        Duration
+                    </label>
+
+                    <input
+                        type="text"
+                        id="jobDuration"
+                        placeholder="3 Months"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Stipend
+                    </label>
+
+                    <input
+                        type="text"
+                        id="jobStipend"
+                        placeholder="₹15,000/month"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Required Skills
+                </label>
+
+                <input
+                    type="text"
+                    id="jobSkills"
+                    placeholder="Python, SQL, Machine Learning"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Description
+                </label>
+
+                <textarea
+                    id="jobDescription"
+                    placeholder="Describe the internship..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Status
+                </label>
+
+                <select id="jobStatus">
+
+                    <option value="Active">
+                        Publish Immediately
+                    </option>
+
+                    <option value="Draft">
+                        Save as Draft
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="submit-job"
+            >
+                Create Internship
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+    function openCreateModal() {
+
+        document
+            .getElementById("createModal")
+            .style.display = "flex";
+
+    }
+
+
+
+    function closeCreateModal() {
+
+        document
+            .getElementById("createModal")
+            .style.display = "none";
+
+    }
+
+
+
+    function createJob(event) {
+
+        event.preventDefault();
+
+
+        const title =
+            document
+                .getElementById("jobTitle")
+                .value
+                .trim();
+
+
+        const company =
+            document
+                .getElementById("jobCompany")
+                .value
+                .trim();
+
+
+        const location =
+            document
+                .getElementById("jobLocation")
+                .value
+                .trim();
+
+
+        const duration =
+            document
+                .getElementById("jobDuration")
+                .value
+                .trim();
+
+
+        const stipend =
+            document
+                .getElementById("jobStipend")
+                .value
+                .trim();
+
+
+        const skills =
+            document
+                .getElementById("jobSkills")
+                .value
+                .trim();
+
+
+        const description =
+            document
+                .getElementById("jobDescription")
+                .value
+                .trim();
+
+
+        const status =
+            document
+                .getElementById("jobStatus")
+                .value;
+
+
+        const jobs =
+            JSON.parse(
+                localStorage.getItem(
+                    "orbitJobs"
+                ) || "[]"
+            );
+
+
+        const job = {
+
+            id:
+                "JOB-" +
+                String(
+                    jobs.length + 4
+                ).padStart(3, "0"),
+
+            title: title,
+
+            company: company,
+
+            location: location,
+
+            duration: duration,
+
+            stipend: stipend,
+
+            skills: skills,
+
+            description: description,
+
+            status: status,
+
+            applicants: 0,
+
+            createdAt:
+                new Date().toLocaleDateString(
+                    "en-IN"
+                )
+
+        };
+
+
+        jobs.push(job);
+
+
+        localStorage.setItem(
+            "orbitJobs",
+            JSON.stringify(jobs)
+        );
+
+
+        alert(
+            "Internship created successfully!"
+        );
+
+
+        closeCreateModal();
+
+
+        document
+            .querySelector("form")
+            .reset();
+
+
+        addJobCard(job);
+
+    }
+
+
+
+    function addJobCard(job) {
+
+        const grid =
+            document.getElementById(
+                "jobsGrid"
+            );
+
+
+        const card =
+            document.createElement("article");
+
+
+        card.className =
+            "job-card";
+
+
+        card.setAttribute(
+            "data-job-id",
+            job.id
+        );
+
+
+        const logo =
+            job.company
+                .substring(0, 2)
+                .toUpperCase();
+
+
+        const skills =
+            job.skills
+                .split(",")
+                .map(function(skill) {
+
+                    return `
+                        <span class="skill">
+                            ${skill.trim()}
+                        </span>
+                    `;
+
+                })
+                .join("");
+
+
+        const statusClass =
+            job.status === "Active"
+                ? "status-active"
+                : "status-draft";
+
+
+        card.innerHTML = `
+
+            <div class="job-header">
+
+                <div class="job-company">
+
+                    <div class="company-logo">
+                        ${logo}
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            ${job.company}
+                        </h3>
+
+                        <p>
+                            ${job.location}
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <span
+                    class="job-status ${statusClass}"
+                >
+                    ${job.status}
+                </span>
+
+            </div>
+
+
+            <h2 class="job-title">
+                ${job.title}
+            </h2>
+
+
+            <p class="job-description">
+                ${job.description}
+            </p>
+
+
+            <div class="job-meta">
+
+                <span class="meta-item">
+                    📍 ${job.location}
+                </span>
+
+                <span class="meta-item">
+                    ⏱ ${job.duration}
+                </span>
+
+                <span class="meta-item">
+                    💰 ${job.stipend}
+                </span>
+
+            </div>
+
+
+            <div class="skills">
+                ${skills}
+            </div>
+
+
+            <div class="job-stats">
+
+                <div class="stat-box">
+
+                    <span>
+                        Applicants
+                    </span>
+
+                    <strong>
+                        0
+                    </strong>
+
+                </div>
+
+                <div class="stat-box">
+
+                    <span>
+                        Created
+                    </span>
+
+                    <strong>
+                        ${job.createdAt}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="job-footer">
+
+                <button
+                    class="job-btn edit-btn"
+                    onclick="editJob('${job.id}')"
+                >
+                    Edit
+                </button>
+
+                <button
+                    class="job-btn applicants-btn"
+                    onclick="viewApplicants('${job.id}')"
+                >
+                    Applicants
+                </button>
+
+                <button
+                    class="job-btn close-btn"
+                    onclick="closeJob(
+                        this,
+                        '${job.id}'
+                    )"
+                >
+                    Close
+                </button>
+
+            </div>
+
+        `;
+
+
+        grid.appendChild(card);
+
+
+        updateJobCount();
+
+    }
+
+
+
+    function updateJobCount() {
+
+        const cards =
+            document.querySelectorAll(
+                ".job-card"
+            );
+
+
+        document
+            .getElementById(
+                "jobCount"
+            )
+            .textContent =
+            cards.length;
+
+    }
+
+
+
+    function closeJob(
+        button,
+        jobId
+    ) {
+
+        const card =
+            button.closest(
+                ".job-card"
+            );
+
+
+        const status =
+            card.querySelector(
+                ".job-status"
+            );
+
+
+        if (
+            button.textContent.trim() ===
+            "Delete"
+        ) {
+
+            const confirmation =
+                confirm(
+                    "Delete this internship draft?"
+                );
+
+
+            if (!confirmation) {
+                return;
+            }
+
+
+            card.remove();
+
+            updateJobCount();
+
+            return;
+
+        }
+
+
+        const confirmation =
+            confirm(
+                "Close this internship?"
+            );
+
+
+        if (!confirmation) {
+            return;
+        }
+
+
+        status.textContent =
+            "Closed";
+
+
+        status.className =
+            "job-status status-closed";
+
+
+        button.textContent =
+            "Closed";
+
+
+        button.disabled =
+            true;
+
+
+        alert(
+            "Internship closed successfully."
+        );
+
+    }
+
+
+
+    function editJob(jobId) {
+
+        alert(
+            "Edit feature for " +
+            jobId +
+            " will be connected to the backend later."
+        );
+
+    }
+
+
+
+    function viewApplicants(jobId) {
+
+        alert(
+            "Applicants for " +
+            jobId +
+            " will be loaded from MongoDB after backend integration."
+        );
+
+    }
+
+
+
+    function loadStoredJobs() {
+
+        const jobs =
+            JSON.parse(
+                localStorage.getItem(
+                    "orbitJobs"
+                ) || "[]"
+            );
+
+
+        jobs.forEach(function(job) {
+
+            addJobCard(job);
+
+        });
+
+    }
+
+
+    loadStoredJobs();
+
+</script>
+
+
+</body>
+
+</html>

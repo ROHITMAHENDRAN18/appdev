@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORBIT Platform</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="shared-app.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-logo">O</div>
+            <div><strong>ORBIT</strong><small>MANAGER PORTAL</small></div>
+        </div>
+        <div class="nav-label">MANAGEMENT</div>
+        <nav>
+            <a href="ManagerDashboard.html" class="active">🏠 <span>Dashboard</span></a>
+            <a href="ManagerStudents.html">👥 <span>Students</span></a>
+            <a href="ManagerApplications.html">📄 <span>Applications</span></a>
+            <a href="ManagerInternships.html">💼 <span>Internships</span></a>
+            <a href="ManagerReports.html">📊 <span>Reports</span></a>
+            <a href="ManagerNotifications.html">🔔 <span>Notifications</span></a>
+        </nav>
+        <div class="sidebar-bottom">
+            <a href="RoleDashboards.html" class="portal-link">← Role Portal</a>
+        </div>
+    </aside>
+
+    <main class="dashboard-main">
+        <header class="dashboard-topbar">
+            <div class="dashboard-title">
+                <h1>Manager Dashboard</h1>
+                <p>Monitor students and manage internship activities.</p>
+            </div>
+            <div class="role-badge">🧑‍💼 MANAGER</div>
+        </header>
+
+        <section class="stats-grid auto">
+            <div class="stat-card">
+                <div class="stat-label">Total Students</div>
+                <div class="stat-value" id="mStatStudents">0</div>
+                <div class="stat-change">Active students</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Active Internships</div>
+                <div class="stat-value" id="mStatJobs">0</div>
+                <div class="stat-change">Active listings</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Applications</div>
+                <div class="stat-value" id="mStatApps">0</div>
+                <div class="stat-change warn">Pending review</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Pending Reviews</div>
+                <div class="stat-value" id="mStatPending">0</div>
+                <div class="stat-change warn">Requires attention</div>
+            </div>
+        </section>
+
+        <section class="content-grid even section-gap">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Student Applications</h2>
+                    <a href="ManagerApplications.html">View All →</a>
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Internship</th>
+                                <th>Company</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mRecentApps"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Manager Actions</h2>
+                </div>
+                <div class="quick-actions">
+                    <a href="ManagerStudents.html" class="action-btn">👥 View Students</a>
+                    <a href="ManagerApplications.html" class="action-btn">📄 Review Applications</a>
+                    <a href="ManagerInternships.html" class="action-btn">💼 Manage Internships</a>
+                    <a href="ManagerReports.html" class="action-btn">📊 Generate Report</a>
+                    <a href="ManagerNotifications.html" class="action-btn">🔔 View Notifications</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-grid even section-gap">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Internship Monitoring</h2>
+                </div>
+                <div class="panel-body">
+                    <div style="margin-bottom:15px;">
+                        <div class="progress-top"><span>Applications Processed</span><span id="pProcessedVal">78%</span></div>
+                        <div class="progress-bar"><div class="progress-fill" style="width:78%"></div></div>
+                    </div>
+                    <div>
+                        <div class="progress-top"><span>Student Placement Rate</span><span id="pPlacementVal">65%</span></div>
+                        <div class="progress-bar"><div class="progress-fill" style="width:65%"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Pending Tasks</h2>
+                </div>
+                <div class="panel-body" id="mTasksList"></div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+function renderManagerDash() {
+    const users = JSON.parse(localStorage.getItem(ORBIT_KEYS.USERS)) || [];
+    const jobs = JSON.parse(localStorage.getItem(ORBIT_KEYS.INTERNSHIPS)) || [];
+    const apps = JSON.parse(localStorage.getItem(ORBIT_KEYS.APPLICATIONS)) || [];
+
+    const students = users.filter(u => u.role === 'Student');
+    const pendingApps = apps.filter(a => a.status === 'Applied' || a.status === 'Under Review');
+
+    document.getElementById('mStatStudents').textContent = students.length;
+    document.getElementById('mStatJobs').textContent = jobs.length;
+    document.getElementById('mStatApps').textContent = apps.length;
+    document.getElementById('mStatPending').textContent = pendingApps.length;
+
+    const tableBody = document.getElementById('mRecentApps');
+    tableBody.innerHTML = apps.slice(0, 4).map(a => `
+        <tr>
+            <td><span class="cell-title">${a.studentName}</span></td>
+            <td>${a.role}</td>
+            <td>${a.company}</td>
+            <td><span class="status ${a.status==='Selected'?'status-success':a.status==='Interview'?'status-warning':'status-info'}">${a.status}</span></td>
+        </tr>
+    `).join('');
+
+    document.getElementById('mTasksList').innerHTML = `
+        <div class="list-item">
+            <div>
+                <strong>${pendingApps.length} Applications</strong>
+                <div class="item-meta">Waiting for review</div>
+            </div>
+            <a href="ManagerApplications.html" class="btn btn-secondary btn-sm">Review</a>
+        </div>
+        <div class="list-item">
+            <div>
+                <strong>5 Student Reports</strong>
+                <div class="item-meta">Due this week</div>
+            </div>
+            <a href="ManagerReports.html" class="btn btn-secondary btn-sm">View</a>
+        </div>
+    `;
+}
+document.addEventListener('DOMContentLoaded', renderManagerDash);
+</script>
+</body>
+</html>

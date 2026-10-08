@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORBIT Platform</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="shared-app.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-logo">O</div>
+            <div><strong>ORBIT</strong><small>STUDENT PORTAL</small></div>
+        </div>
+        <div class="nav-label">MAIN MENU</div>
+        <nav>
+            <a href="StudentDashboard.html" class="active">🏠 <span>Dashboard</span></a>
+            <a href="StudentInternships.html">💼 <span>Find Internships</span></a>
+            <a href="StudentApplications.html">📄 <span>My Applications</span></a>
+            <a href="StudentTraining.html">📚 <span>My Training</span></a>
+            <a href="StudentNotifications.html">🔔 <span>Notifications</span></a>
+            <a href="StudentProfile.html">👤 <span>My Profile</span></a>
+        </nav>
+        <div class="sidebar-bottom">
+            <a href="RoleDashboards.html" class="portal-link">← Role Portal</a>
+        </div>
+    </aside>
+
+    <main class="dashboard-main">
+        <header class="dashboard-topbar">
+            <div class="dashboard-title">
+                <h1 id="welcomeHeading">Welcome Back, Student</h1>
+                <p>Track your internship journey, upcoming deadlines, and training milestones.</p>
+            </div>
+            <div class="role-badge">🎓 STUDENT</div>
+        </header>
+
+        <section class="welcome-panel">
+            <div>
+                <h2>Ready for your next opportunity?</h2>
+                <p>Keep your profile updated and apply to high-match internships recommended for your skillset.</p>
+            </div>
+            <div class="welcome-meter">
+                <div class="progress-top"><span>Profile Completion</span><span id="profCompVal">90%</span></div>
+                <div class="progress-bar"><div class="progress-fill" style="width:90%"></div></div>
+            </div>
+        </section>
+
+        <section class="stats-grid auto">
+            <div class="stat-card">
+                <div class="stat-label">Total Applied</div>
+                <div class="stat-value" id="statApplied">0</div>
+                <div class="stat-change muted">Submitted applications</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Pending Review</div>
+                <div class="stat-value" id="statPending">0</div>
+                <div class="stat-change warn">Awaiting decisions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Interviews</div>
+                <div class="stat-value" id="statInterviews">0</div>
+                <div class="stat-change">Scheduled rounds</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Selected</div>
+                <div class="stat-value" id="statSelected">0</div>
+                <div class="stat-change">Offers received</div>
+            </div>
+        </section>
+
+        <section class="content-grid even section-gap">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Recent Applications</h2>
+                    <a href="StudentApplications.html">View All →</a>
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Role & Company</th>
+                                <th>Applied Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentAppsTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Quick Actions</h2>
+                </div>
+                <div class="quick-actions">
+                    <a href="StudentInternships.html" class="action-btn">🔎 Find Internships</a>
+                    <a href="StudentApplications.html" class="action-btn">📄 My Applications</a>
+                    <a href="StudentTraining.html" class="action-btn">📚 Continue Training</a>
+                    <a href="StudentProfile.html" class="action-btn">👤 Update Profile</a>
+                    <a href="StudentNotifications.html" class="action-btn">🔔 View Notifications</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-grid even section-gap">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Recommended Internships</h2>
+                    <a href="StudentInternships.html">Explore All →</a>
+                </div>
+                <div id="recommendedList" class="panel-body"></div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Upcoming Deadlines</h2>
+                </div>
+                <div id="deadlinesList" class="panel-body"></div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+function renderDashboard() {
+    const profile = JSON.parse(localStorage.getItem(ORBIT_KEYS.PROFILE));
+    document.getElementById('welcomeHeading').textContent = `Welcome Back, ${profile.name.split(' ')[0]}`;
+
+    const apps = JSON.parse(localStorage.getItem(ORBIT_KEYS.APPLICATIONS)) || [];
+    const studentApps = apps.filter(a => a.studentEmail === profile.email || a.studentName === profile.name);
+
+    document.getElementById('statApplied').textContent = studentApps.length;
+    document.getElementById('statPending').textContent = studentApps.filter(a => a.status === 'Applied' || a.status === 'Under Review').length;
+    document.getElementById('statInterviews').textContent = studentApps.filter(a => a.status === 'Interview').length;
+    document.getElementById('statSelected').textContent = studentApps.filter(a => a.status === 'Selected').length;
+
+    const tableBody = document.getElementById('recentAppsTable');
+    if (studentApps.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="3" class="text-muted">No active applications.</td></tr>`;
+    } else {
+        tableBody.innerHTML = studentApps.slice(0, 4).map(a => `
+            <tr>
+                <td><span class="cell-title">${a.role}</span><span class="cell-sub">${a.company}</span></td>
+                <td>${a.appliedDate}</td>
+                <td><span class="status ${a.status==='Selected'?'status-success':a.status==='Interview'?'status-warning':'status-info'}">${a.status}</span></td>
+            </tr>
+        `).join('');
+    }
+
+    const jobs = JSON.parse(localStorage.getItem(ORBIT_KEYS.INTERNSHIPS)) || [];
+    document.getElementById('recommendedList').innerHTML = jobs.slice(0, 2).map(j => `
+        <div class="list-item">
+            <div>
+                <strong>${j.title}</strong>
+                <div class="item-meta">${j.company} • ${j.location} • ${j.stipend}</div>
+            </div>
+            <a href="StudentInternships.html" class="btn btn-secondary btn-sm">Apply</a>
+        </div>
+    `).join('');
+
+    document.getElementById('deadlinesList').innerHTML = jobs.slice(0, 2).map(j => `
+        <div class="list-item">
+            <div>
+                <strong>${j.title} (${j.company})</strong>
+                <div class="item-meta text-muted">Deadline: ${j.deadline}</div>
+            </div>
+            <span class="status status-warning">Closing Soon</span>
+        </div>
+    `).join('');
+}
+document.addEventListener('DOMContentLoaded', renderDashboard);
+</script>
+</body>
+</html>

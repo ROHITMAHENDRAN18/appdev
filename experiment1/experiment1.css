@@ -1,0 +1,382 @@
+/* ------------------------------
+   GENERAL
+--------------------------------*/
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f4f4f4;
+    color:#333;
+    line-height:1.7;
+}
+
+.container{
+    width:85%;
+    margin:auto;
+}
+
+a{
+    text-decoration:none;
+}
+
+ul{
+    list-style:none;
+}
+
+/* ------------------------------
+   HEADER
+--------------------------------*/
+
+header{
+    background:#2d2d2d;
+    color:#fff;
+    padding:20px 0;
+}
+
+header .container{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:30px;
+}
+
+nav ul{
+    display:flex;
+}
+
+nav ul li{
+    margin-left:25px;
+}
+
+nav ul li a{
+    color:white;
+    font-size:17px;
+}
+
+nav ul li a:hover{
+    color:#66cc66;
+}
+
+/* ------------------------------
+   HOME
+--------------------------------*/
+
+.home{
+    background:white;
+    padding:60px 0;
+}
+
+.home-content{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.left{
+    width:60%;
+}
+
+.left h1{
+    font-size:45px;
+    margin-bottom:20px;
+}
+
+.left p{
+    font-size:18px;
+    text-align:justify;
+}
+
+.right{
+    width:35%;
+    text-align:center;
+}
+
+.right img{
+
+    width:280px;
+    height:280px;
+
+    border-radius:50%;
+
+    border:8px solid #66cc66;
+
+    object-fit:cover;
+}
+
+/* ------------------------------
+   BUTTON
+--------------------------------*/
+
+.btn{
+
+    display:inline-block;
+
+    margin-top:25px;
+
+    background:#2d2d2d;
+
+    color:white;
+
+    padding:12px 28px;
+
+    border-radius:5px;
+
+    transition:0.4s;
+
+}
+
+.btn:hover{
+
+    background:#66cc66;
+
+    color:black;
+
+}
+
+/* ------------------------------
+   CONTENT
+--------------------------------*/
+
+.content{
+
+    background:white;
+
+    margin-top:20px;
+
+    padding:40px 0;
+
+}
+
+.content h2{
+
+    margin-bottom:20px;
+
+    color:#222;
+
+    border-bottom:3px solid #66cc66;
+
+    display:inline-block;
+
+    padding-bottom:5px;
+
+}
+
+.content p{
+
+    font-size:17px;
+
+    text-align:justify;
+
+}
+
+/* ------------------------------
+   TABLE
+--------------------------------*/
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    margin-top:20px;
+
+}
+
+table,th,td{
+
+    border:1px solid #ccc;
+
+}
+
+th{
+
+    background:#2d2d2d;
+
+    color:white;
+
+}
+
+th,td{
+
+    padding:15px;
+
+    text-align:center;
+
+}
+
+/* ------------------------------
+   SKILLS
+--------------------------------*/
+
+.skills{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    margin-top:20px;
+
+}
+
+.skills li{
+
+    background:#66cc66;
+
+    color:white;
+
+    padding:10px 18px;
+
+    margin:10px;
+
+    border-radius:20px;
+
+    font-weight:bold;
+
+}
+
+/* ------------------------------
+   PROJECTS
+--------------------------------*/
+
+.project-box{
+
+    background:#fafafa;
+
+    padding:20px;
+
+    margin-top:20px;
+
+    border-left:6px solid #66cc66;
+
+    box-shadow:0 0 10px rgba(0,0,0,.1);
+
+    transition:.3s;
+
+}
+
+.project-box:hover{
+
+    transform:translateY(-5px);
+
+}
+
+.project-box h3{
+
+    margin-bottom:10px;
+
+}
+
+/* ------------------------------
+   CONTACT
+--------------------------------*/
+
+#contact p{
+
+    margin:12px 0;
+
+    font-size:17px;
+
+}
+
+/* ------------------------------
+   FOOTER
+--------------------------------*/
+
+footer{
+
+    background:#2d2d2d;
+
+    color:white;
+
+    text-align:center;
+
+    padding:20px;
+
+    margin-top:30px;
+
+}
+
+/* ------------------------------
+   RESPONSIVE
+--------------------------------*/
+
+@media(max-width:768px){
+
+.home-content{
+
+    flex-direction:column;
+
+    text-align:center;
+
+}
+
+.left{
+
+    width:100%;
+
+}
+
+.right{
+
+    width:100%;
+
+    margin-top:30px;
+
+}
+
+.right img{
+
+    width:220px;
+
+    height:220px;
+
+}
+
+header .container{
+
+    flex-direction:column;
+
+}
+
+nav ul{
+
+    flex-wrap:wrap;
+
+    justify-content:center;
+
+    margin-top:20px;
+
+}
+
+nav ul li{
+
+    margin:10px;
+
+}
+
+.skills{
+
+    justify-content:center;
+
+
+}
+.home .right img {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    object-fit: cover;
+    /* Optional: Adds a nice border and shadow */
+    border: 3px solid #333; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+}

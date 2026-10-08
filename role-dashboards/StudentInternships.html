@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORBIT Platform</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="shared-app.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-logo">O</div>
+            <div><strong>ORBIT</strong><small>STUDENT PORTAL</small></div>
+        </div>
+        <div class="nav-label">MAIN MENU</div>
+        <nav>
+            <a href="StudentDashboard.html">🏠 <span>Dashboard</span></a>
+            <a href="StudentInternships.html" class="active">💼 <span>Find Internships</span></a>
+            <a href="StudentApplications.html">📄 <span>My Applications</span></a>
+            <a href="StudentTraining.html">📚 <span>My Training</span></a>
+            <a href="StudentNotifications.html">🔔 <span>Notifications</span></a>
+            <a href="StudentProfile.html">👤 <span>My Profile</span></a>
+        </nav>
+        <div class="sidebar-bottom">
+            <a href="RoleDashboards.html" class="portal-link">← Role Portal</a>
+        </div>
+    </aside>
+
+    <main class="dashboard-main">
+        <header class="dashboard-topbar">
+            <div class="dashboard-title">
+                <h1>Find Internships</h1>
+                <p>Browse, filter, bookmark, and apply for opportunities.</p>
+            </div>
+            <div class="role-badge">🎓 STUDENT</div>
+        </header>
+
+        <section class="page-toolbar">
+            <div class="toolbar-filters">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search role, skills or company..." oninput="filterJobs()">
+                <select id="companyFilter" class="filter-select" onchange="filterJobs()"><option value="all">All Companies</option></select>
+                <select id="locationFilter" class="filter-select" onchange="filterJobs()"><option value="all">All Locations</option></select>
+                <select id="durationFilter" class="filter-select" onchange="filterJobs()"><option value="all">All Durations</option></select>
+            </div>
+            <div class="result-count">Found <strong id="jobCount">0</strong> opportunities</div>
+        </section>
+
+        <section id="jobsGrid" class="card-grid"></section>
+        <div id="emptyState" class="empty-state" style="display:none;">
+            <div class="empty-icon">🔍</div>
+            <h3>No internships matched your filter</h3>
+            <p>Try resetting your search query or selecting alternative filters.</p>
+        </div>
+    </main>
+</div>
+
+<script>
+let savedBookmarks = JSON.parse(localStorage.getItem('orbit_bookmarks')) || [];
+
+function populateFilters(jobs) {
+    const compSelect = document.getElementById('companyFilter');
+    const locSelect = document.getElementById('locationFilter');
+    const durSelect = document.getElementById('durationFilter');
+
+    const companies = [...new Set(jobs.map(j => j.company))];
+    const locations = [...new Set(jobs.map(j => j.location))];
+    const durations = [...new Set(jobs.map(j => j.duration))];
+
+    companies.forEach(c => compSelect.appendChild(new Option(c, c)));
+    locations.forEach(l => locSelect.appendChild(new Option(l, l)));
+    durations.forEach(d => durSelect.appendChild(new Option(d, d)));
+}
+
+function filterJobs() {
+    const jobs = JSON.parse(localStorage.getItem(ORBIT_KEYS.INTERNSHIPS)) || [];
+    const apps = JSON.parse(localStorage.getItem(ORBIT_KEYS.APPLICATIONS)) || [];
+    const profile = JSON.parse(localStorage.getItem(ORBIT_KEYS.PROFILE));
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const comp = document.getElementById('companyFilter').value;
+    const loc = document.getElementById('locationFilter').value;
+    const dur = document.getElementById('durationFilter').value;
+
+    const filtered = jobs.filter(j => {
+        const matchesQuery = j.title.toLowerCase().includes(query) || j.company.toLowerCase().includes(query) || j.skills.some(s=>s.toLowerCase().includes(query));
+        const matchesComp = comp === 'all' || j.company === comp;
+        const matchesLoc = loc === 'all' || j.location === loc;
+        const matchesDur = dur === 'all' || j.duration === dur;
+        return matchesQuery && matchesComp && matchesLoc && matchesDur && j.status === 'Active';
+    });
+
+    document.getElementById('jobCount').textContent = filtered.length;
+    const grid = document.getElementById('jobsGrid');
+    const empty = document.getElementById('emptyState');
+
+    if (filtered.length === 0) {
+        grid.style.display = 'none';
+        empty.style.display = 'block';
+        return;
+    }
+
+    grid.style.display = 'grid';
+    empty.style.display = 'none';
+
+    grid.innerHTML = filtered.map(j => {
+        const hasApplied = apps.some(a => a.jobId === j.id && (a.studentEmail === profile.email || a.studentName === profile.name));
+        const isBookmarked = savedBookmarks.includes(j.id);
+        return `
+            <article class="item-card">
+                <div class="company-row">
+                    <div class="company-logo">${j.company.substring(0, 2).toUpperCase()}</div>
+                    <div>
+                        <h3>${j.company}</h3>
+                        <p>📍 ${j.location}</p>
+                    </div>
+                    <button class="icon-btn ${isBookmarked ? 'saved' : ''}" onclick="toggleBookmark('${j.id}')">★</button>
+                </div>
+                <h2 class="internship-title">${j.title}</h2>
+                <p class="internship-description">${j.description}</p>
+                <div class="internship-details">
+                    <div class="detail-item"><span>Duration</span><strong>${j.duration}</strong></div>
+                    <div class="detail-item"><span>Stipend</span><strong>${j.stipend}</strong></div>
+                </div>
+                <div class="skills">
+                    ${j.skills.map(s => `<span class="skill">${s}</span>`).join('')}
+                </div>
+                <div class="card-footer">
+                    <span class="deadline urgent">Deadline: ${j.deadline}</span>
+                    <button class="btn ${hasApplied ? 'btn-secondary' : 'btn-primary'}" ${hasApplied ? 'disabled' : ''} onclick="applyJob('${j.id}')">
+                        ${hasApplied ? 'Applied ✓' : 'Apply Now'}
+                    </button>
+                </div>
+            </article>
+        `;
+    }).join('');
+}
+
+function toggleBookmark(id) {
+    if (savedBookmarks.includes(id)) {
+        savedBookmarks = savedBookmarks.filter(b => b !== id);
+        showToast('Bookmark removed', 'info');
+    } else {
+        savedBookmarks.push(id);
+        showToast('Internship bookmarked!', 'success');
+    }
+    localStorage.setItem('orbit_bookmarks', JSON.stringify(savedBookmarks));
+    filterJobs();
+}
+
+function applyJob(jobId) {
+    const jobs = JSON.parse(localStorage.getItem(ORBIT_KEYS.INTERNSHIPS)) || [];
+    const apps = JSON.parse(localStorage.getItem(ORBIT_KEYS.APPLICATIONS)) || [];
+    const profile = JSON.parse(localStorage.getItem(ORBIT_KEYS.PROFILE));
+    const targetJob = jobs.find(j => j.id === jobId);
+
+    if (!targetJob) return;
+
+    const newApp = {
+        id: 'APP-' + Math.floor(100 + Math.random() * 900),
+        studentName: profile.name,
+        studentEmail: profile.email,
+        jobId: targetJob.id,
+        role: targetJob.title,
+        company: targetJob.company,
+        cgpa: '8.8',
+        appliedDate: new Date().toISOString().split('T')[0],
+        status: 'Applied',
+        interviewDate: '',
+        skills: targetJob.skills
+    };
+
+    apps.push(newApp);
+    localStorage.setItem(ORBIT_KEYS.APPLICATIONS, JSON.stringify(apps));
+    showToast(`Successfully applied to ${targetJob.company}!`, 'success');
+    filterJobs();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const jobs = JSON.parse(localStorage.getItem(ORBIT_KEYS.INTERNSHIPS)) || [];
+    populateFilters(jobs);
+    filterJobs();
+});
+</script>
+</body>
+</html>

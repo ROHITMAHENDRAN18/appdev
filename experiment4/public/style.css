@@ -1,0 +1,98 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background: radial-gradient(circle at center, #1a1a2e 0%, #0f0f1a 100%);
+    color: #e0e0e0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+}
+
+/* Navigation */
+nav {
+    width: 100%;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+nav a {
+    color: #00e6e6;
+    text-decoration: none;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: text-shadow 0.3s ease;
+}
+
+nav a:hover { text-shadow: 0 0 10px #00e6e6, 0 0 20px #00e6e6; }
+
+/* Antigravity Floating Effect */
+.container {
+    margin-top: 80px;
+    padding: 40px;
+    background: rgba(20, 20, 40, 0.6);
+    border: 1px solid rgba(0, 230, 230, 0.3);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 230, 230, 0.1) inset;
+    text-align: center;
+    max-width: 600px;
+    width: 90%;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+    100% { transform: translateY(0px); }
+}
+
+h1 { color: #fff; margin-bottom: 15px; font-size: 2.5rem; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+p { line-height: 1.6; color: #b3b3b3; margin-bottom: 20px; }
+
+/* Form Styles */
+form { display: flex; flex-direction: column; gap: 15px; }
+
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 230, 230, 0.3);
+    border-radius: 8px;
+    color: #fff;
+    font-family: inherit;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+input:focus, textarea:focus {
+    border-color: #00e6e6;
+    box-shadow: 0 0 10px rgba(0, 230, 230, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+button {
+    padding: 12px;
+    background: transparent;
+    color: #00e6e6;
+    border: 1px solid #00e6e6;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background: #00e6e6;
+    color: #0a0a1a;
+    box-shadow: 0 0 15px #00e6e6;
+}
+

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORBIT Platform</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="shared-app.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-logo">O</div>
+            <div><strong>ORBIT</strong><small>RECRUITER PORTAL</small></div>
+        </div>
+        <div class="nav-label">RECRUITMENT</div>
+        <nav>
+            <a href="RecruiterDashboard.html" class="active">🏠 <span>Dashboard</span></a>
+            <a href="RecruiterJobs.html">💼 <span>Internships</span></a>
+            <a href="RecruiterApplications.html">📄 <span>Applicants</span></a>
+            <a href="RecruiterInterviews.html">📅 <span>Interviews</span></a>
+            <a href="RecruiterReports.html">📊 <span>Reports</span></a>
+            <a href="RecruiterNotifications.html">🔔 <span>Notifications</span></a>
+        </nav>
+        <div class="sidebar-bottom">
+            <a href="RoleDashboards.html" class="portal-link">← Role Portal</a>
+        </div>
+    </aside>
+
+    <main class="dashboard-main">
+        <header class="dashboard-topbar">
+            <div class="dashboard-title">
+                <h1>Recruiter Dashboard</h1>
+                <p>Manage internship opportunities and student applications.</p>
+            </div>
+            <div class="role-badge">🏢 RECRUITER</div>
+        </header>
+
+        <section class="stats-grid auto">
+            <div class="stat-card">
+                <div class="stat-label">Active Jobs</div>
+                <div class="stat-value" id="rStatJobs">0</div>
+                <div class="stat-change">Open openings</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Applications</div>
+                <div class="stat-value" id="rStatApps">0</div>
+                <div class="stat-change">Total received</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Shortlisted</div>
+                <div class="stat-value" id="rStatShortlisted">0</div>
+                <div class="stat-change">Candidates</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Interviews</div>
+                <div class="stat-value" id="rStatInterviews">0</div>
+                <div class="stat-change warn">Scheduled</div>
+            </div>
+        </section>
+
+        <section class="content-grid even section-gap">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Recent Applications</h2>
+                    <a href="RecruiterApplications.html">View All →</a>
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Position</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rRecentApps"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Recruiter Actions</h2>
+                </div>
+                <div class="quick-actions">
+                    <button class="action-btn" onclick="openPostJobModal()">+ Post New Internship</button>
+                    <a href="RecruiterApplications.html" class="action-btn">📄 View Applications</a>
+                    <a href="RecruiterInterviews.html" class="action-btn">📅 Manage Interview Schedule</a>
+                    <a href="RecruiterReports.html" class="action-btn">📊 View Recruitment Report</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-grid even section-gap">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Recruitment Pipeline</h2>
+                </div>
+                <div class="panel-body">
+                    <div style="margin-bottom:15px;">
+                        <div class="progress-top"><span>Applications Reviewed</span><span>72%</span></div>
+                        <div class="progress-bar"><div class="progress-fill" style="width:72%"></div></div>
+                    </div>
+                    <div>
+                        <div class="progress-top"><span>Interview Completion</span><span>61%</span></div>
+                        <div class="progress-bar"><div class="progress-fill" style="width:61%"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Upcoming Interviews</h2>
+                </div>
+                <div class="panel-body" id="rUpcomingInterviews"></div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<div id="postJobModal" class="modal-overlay" style="display:none;">
+    <div class="modal">
+        <div class="modal-header">
+            <h2>Post New Internship Listing</h2>
+            <button class="modal-close" onclick="closePostJobModal()">×</button>
+        </div>
+        <form onsubmit="saveJobListing(event)" class="modal-body form-grid">
+            <div class="form-field full"><label>Role / Position Title</label><input type="text" id="jTitle" required placeholder="e.g. Machine Learning Intern"></div>
+            <div class="form-field"><label>Company Name</label><input type="text" id="jCompany" required placeholder="e.g. CloudWorks"></div>
+            <div class="form-field"><label>Location</label><input type="text" id="jLocation" required placeholder="e.g. Bangalore"></div>
+            <div class="form-field"><label>Duration</label><input type="text" id="jDuration" required placeholder="e.g. 6 Months"></div>
+            <div class="form-field"><label>Stipend</label><input type="text" id="jStipend" required placeholder="e.g. ₹20,000/mo"></div>
+            <div class="form-field"><label>Deadline</label><input type="date" id="jDeadline" required></div>
+            <div class="form-field full"><label>Required Skills (Comma separated)</label><input type="text" id="jSkills" required placeholder="Python, TensorFlow, SQL"></div>
+            <div class="form-field full"><label>Job Description</label><textarea id="jDesc" required placeholder="Enter role details..."></textarea></div>
+            <div class="modal-footer full">
+                <button type="submit" class="btn btn-primary">Publish Job Listing</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function renderRecruiterDash() {
+    const jobs = JSON.parse(localStorage.getItem(ORBIT_KEYS.INTERNSHIPS)) || [];
+    const apps = JSON.parse(localStorage.getItem(ORBIT_KEYS.APPLICATIONS)) || [];
+
+    document.getElementById('rStatJobs').textContent = jobs.length;
+    document.getElementById('rStatApps').textContent = apps.length;
+    document.getElementById('rStatShortlisted').textContent = apps.filter(a => a.status === 'Shortlisted').length;
+    document.getElementById('rStatInterviews').textContent = apps.filter(a => a.status === 'Interview').length;
+
+    document.getElementById('rRecentApps').innerHTML = apps.slice(0, 4).map(a => `
+        <tr>
+            <td><span class="cell-title">${a.studentName}</span></td>
+            <td>${a.role}</td>
+            <td><span class="status ${a.status==='Selected'?'status-success':a.status==='Interview'?'status-warning':'status-info'}">${a.status}</span></td>
+        </tr>
+    `).join('');
+
+    const scheduled = apps.filter(a => a.status === 'Interview' || a.interviewDate);
+    document.getElementById('rUpcomingInterviews').innerHTML = scheduled.length === 0 ? '<p class="text-muted">No upcoming interviews scheduled.</p>' : scheduled.map(i => `
+        <div class="list-item">
+            <div>
+                <strong>${i.studentName} (${i.role})</strong>
+                <div class="item-meta" style="color:var(--cyan)">Date: ${i.interviewDate || 'To be scheduled'}</div>
+            </div>
+            <a href="RecruiterInterviews.html" class="btn btn-secondary btn-sm">Manage</a>
+        </div>
+    `).join('');
+}
+
+function openPostJobModal() { document.getElementById('postJobModal').style.display = 'grid'; }
+function closePostJobModal() { document.getElementById('postJobModal').style.display = 'none'; }
+
+function saveJobListing(e) {
+    e.preventDefault();
+    const jobs = JSON.parse(localStorage.getItem(ORBIT_KEYS.INTERNSHIPS)) || [];
+    const newJob = {
+        id: 'JOB-' + Math.floor(100 + Math.random() * 900),
+        title: document.getElementById('jTitle').value,
+        company: document.getElementById('jCompany').value,
+        location: document.getElementById('jLocation').value,
+        duration: document.getElementById('jDuration').value,
+        stipend: document.getElementById('jStipend').value,
+        skills: document.getElementById('jSkills').value.split(',').map(s=>s.trim()),
+        description: document.getElementById('jDesc').value,
+        deadline: document.getElementById('jDeadline').value,
+        status: 'Active'
+    };
+    jobs.unshift(newJob);
+    localStorage.setItem(ORBIT_KEYS.INTERNSHIPS, JSON.stringify(jobs));
+    showToast('Internship listing published!', 'success');
+    closePostJobModal();
+    renderRecruiterDash();
+}
+
+document.addEventListener('DOMContentLoaded', renderRecruiterDash);
+</script>
+</body>
+</html>

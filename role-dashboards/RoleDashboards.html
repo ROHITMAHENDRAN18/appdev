@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORBIT Platform</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="shared-app.js"></script>
+</head>
+
+<body>
+    
+
+  <!-- AUTH SCREEN CONTAINER -->
+  <div id="auth-screen">
+    <div class="auth-orb o1"></div>
+    <div class="auth-orb o2"></div>
+    <div class="auth-orb o3"></div>
+    <div class="auth-card">
+      <div class="login-ring-wrap">
+        <div class="login-ring"></div>
+        <div class="login-ring r2"></div>
+        <div class="login-core"></div>
+      </div>
+      <div class="brand-mark">⌁ ORBIT</div>
+      
+      <!-- Tabs to switch between Login and Sign Up -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login" type="button" onclick="switchAuthTab('login')">Login</button>
+        <button class="auth-tab" id="tab-signup" type="button" onclick="switchAuthTab('signup')">Sign Up</button>
+      </div>
+
+      <!-- Form handled dynamically by shared-app.js -->
+      <form class="auth-form" id="authForm" onsubmit="handleLogin(event)">
+        <div class="field">
+          <label>Email Address</label>
+          <input type="email" id="authEmail" value="rohit@velammal.edu" required>
+        </div>
+        <div class="field">
+          <label>Access Key</label>
+          <input type="password" id="authPass" value="password123" required>
+        </div>
+        <button class="btn-neon" type="submit">Enter Dashboard →</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ROLE SELECTION SCREEN -->
+  <div id="role-screen">
+    <div class="role-screen-inner">
+      <div class="role-screen-eyebrow">⌁ ORBIT PLATFORM</div>
+      <div class="role-screen-title">Continue as…</div>
+      <div class="role-screen-sub">Select your workspace role:</div>
+      <div class="role-grid" id="roleGrid"></div>
+    </div>
+  </div>
+
+
+
+    <div class="background-glow glow-one"></div>
+    <div class="background-glow glow-two"></div>
+
+    <main class="portal">
+
+        <header class="portal-header">
+            <div class="brand">
+                <div class="brand-logo">O</div>
+
+                <div>
+                    <h1>ORBIT</h1>
+                    <span>INTERNSHIP & TRAINING TRACKER</span>
+                </div>
+            </div>
+
+            <div class="system-status">
+                <span class="status-dot"></span>
+                Frontend System Online
+            </div>
+        </header>
+
+        <section class="role-selection">
+
+            <div class="section-heading">
+                <span class="eyebrow">ROLE ACCESS</span>
+
+                <h2>Select Your Dashboard</h2>
+
+                <p>
+                    Choose your role to access the corresponding
+                    internship and training management dashboard.
+                </p>
+            </div>
+
+            <div class="role-grid">
+
+                <!-- STUDENT -->
+                <a href="StudentDashboard.html" class="role-card student-card">
+
+                    <div class="role-icon">🎓</div>
+
+                    <div class="role-content">
+                        <span class="role-number">01</span>
+
+                        <h3>Student</h3>
+
+                        <p>
+                            Track internships, applications,
+                            training progress and opportunities.
+                        </p>
+                    </div>
+
+                    <div class="role-arrow">→</div>
+
+                </a>
+
+
+                <!-- MANAGER -->
+                <a href="ManagerDashboard.html" class="role-card manager-card">
+
+                    <div class="role-icon">👨‍💼</div>
+
+                    <div class="role-content">
+                        <span class="role-number">02</span>
+
+                        <h3>Manager</h3>
+
+                        <p>
+                            Manage students, review applications
+                            and monitor internship activities.
+                        </p>
+                    </div>
+
+                    <div class="role-arrow">→</div>
+
+                </a>
+
+
+                <!-- RECRUITER -->
+                <a href="RecruiterDashboard.html" class="role-card recruiter-card">
+
+                    <div class="role-icon">🏢</div>
+
+                    <div class="role-content">
+                        <span class="role-number">03</span>
+
+                        <h3>Recruiter</h3>
+
+                        <p>
+                            Post internship opportunities and
+                            manage student applications.
+                        </p>
+                    </div>
+
+                    <div class="role-arrow">→</div>
+
+                </a>
+
+
+                <!-- TRAINING COORDINATOR -->
+                <a href="TrainingCoordinatorDashboard.html" class="role-card coordinator-card">
+
+                    <div class="role-icon">📚</div>
+
+                    <div class="role-content">
+                        <span class="role-number">04</span>
+
+                        <h3>Training Coordinator</h3>
+
+                        <p>
+                            Manage training programs and monitor
+                            student learning progress.
+                        </p>
+                    </div>
+
+                    <div class="role-arrow">→</div>
+
+                </a>
+
+
+                <!-- ADMIN -->
+                <a href="AdminDashboard.html" class="role-card admin-card">
+
+                    <div class="role-icon">⚙️</div>
+
+                    <div class="role-content">
+                        <span class="role-number">05</span>
+
+                        <h3>Administrator</h3>
+
+                        <p>
+                            Manage users, internships, training,
+                            reports and system activities.
+                        </p>
+                    </div>
+
+                    <div class="role-arrow">→</div>
+
+                </a>
+
+            </div>
+
+        </section>
+
+        <footer class="portal-footer">
+            <span>ORBIT Internship Management Platform</span>
+            <span>Frontend Prototype • v1.0</span>
+        </footer>
+
+    </main>
+
+</body>
+</html>

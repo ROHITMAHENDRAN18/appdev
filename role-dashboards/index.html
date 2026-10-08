@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORBIT // Internship & Training Portal</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="shared-app.js" defer></script>
+</head>
+<body>
+
+<!-- Step 1: LOGIN / SIGNUP SCREEN -->
+<div id="auth-screen">
+  <div class="auth-card">
+    <div class="brand-mark">⌁ ORBIT</div>
+    <div class="brand-sub">Internship & Training Tracker</div>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-login" type="button" onclick="switchAuthTab('login')">Login</button>
+      <button class="auth-tab" id="tab-signup" type="button" onclick="switchAuthTab('signup')">Sign Up</button>
+    </div>
+
+    <form class="auth-form" id="authForm" onsubmit="handleAuthSubmit(event)">
+      <div class="field">
+        <label>Email Address / ID</label>
+        <input type="text" id="authEmail" value="rohit@velammal.edu" required placeholder="rohit@velammal.edu">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="authPass" value="password123" required placeholder="••••••••">
+      </div>
+      <button class="btn-neon" type="submit">Enter Dashboard →</button>
+    </form>
+    <div class="login-note">Demo Credentials Loaded Automatically</div>
+  </div>
+</div>
+
+<!-- Step 2: ROLE SELECTION SCREEN -->
+<div id="role-screen" style="display:none;">
+  <div class="role-screen-inner">
+    <div class="role-screen-eyebrow">⌁ ORBIT PLATFORM</div>
+    <div class="role-screen-title">Continue as…</div>
+    <div class="role-screen-sub">Choose a workspace mode to access full dashboard features.</div>
+    <div class="role-grid" id="roleGrid"></div>
+  </div>
+</div>
+
+<!-- Step 3: FULL DASHBOARD PORTAL -->
+<div id="app" style="display:none;">
+  <div class="shell">
+    
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="sidebar-logo">O</div>
+        <div>
+          <strong>ORBIT</strong>
+          <small id="sidebarRoleLabel">PORTAL</small>
+        </div>
+      </div>
+      <div class="nav-label">NAVIGATION</div>
+      <nav class="nav-group" id="navGroup"></nav>
+      <div class="sidebar-foot">
+        <button class="switch-role-btn" onclick="switchRole()">⇄ Switch Role Mode</button>
+        <button class="switch-role-btn danger" onclick="handleLogout()">Logout Account</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="page-title" id="pageTitle">◈ <span>DASHBOARD</span></div>
+        <div class="topbar-right">
+          <div class="role-badge" id="roleBadge">
+            <span class="dot"></span>
+            <span id="roleBadgeText">Student</span>
+          </div>
+          <div class="pill" id="clockPill">—</div>
+          <div class="avatar" id="topAvatar">RO</div>
+        </div>
+      </header>
+
+      <div id="viewContainer"></div>
+    </main>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+</body>
+</html>

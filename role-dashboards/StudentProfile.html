@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORBIT Platform</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="shared-app.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-logo">O</div>
+            <div><strong>ORBIT</strong><small>STUDENT PORTAL</small></div>
+        </div>
+        <div class="nav-label">MAIN MENU</div>
+        <nav>
+            <a href="StudentDashboard.html">🏠 <span>Dashboard</span></a>
+            <a href="StudentInternships.html">💼 <span>Find Internships</span></a>
+            <a href="StudentApplications.html">📄 <span>My Applications</span></a>
+            <a href="StudentTraining.html">📚 <span>My Training</span></a>
+            <a href="StudentNotifications.html">🔔 <span>Notifications</span></a>
+            <a href="StudentProfile.html" class="active">👤 <span>My Profile</span></a>
+        </nav>
+        <div class="sidebar-bottom">
+            <a href="RoleDashboards.html" class="portal-link">← Role Portal</a>
+        </div>
+    </aside>
+
+    <main class="dashboard-main">
+        <header class="dashboard-topbar">
+            <div class="dashboard-title">
+                <h1>My Profile</h1>
+                <p>Update your personal info, contact metrics, skills, and online portfolios.</p>
+            </div>
+            <div class="role-badge">🎓 STUDENT</div>
+        </header>
+
+        <section class="profile-layout">
+            <div class="panel profile-card">
+                <div class="avatar-lg" id="avatarBox">RM</div>
+                <h2 id="cardName">Rahul M</h2>
+                <p id="cardDept">AI & Data Science</p>
+                <div class="skills section-gap" id="cardSkills"></div>
+                <div class="profile-links">
+                    <a id="linkGithub" href="#" target="_blank">🔗 GitHub</a>
+                    <a id="linkLinkedin" href="#" target="_blank">🔗 LinkedIn</a>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header"><h2>Edit Profile Information</h2></div>
+                <form id="profileForm" onsubmit="saveProfile(event)" class="panel-body form-grid">
+                    <div class="form-field"><label>Full Name</label><input type="text" id="profName" required></div>
+                    <div class="form-field"><label>Email Address</label><input type="email" id="profEmail" required></div>
+                    <div class="form-field"><label>Phone Number</label><input type="text" id="profPhone" required></div>
+                    <div class="form-field"><label>Department</label><input type="text" id="profDept" required></div>
+                    <div class="form-field"><label>College / University</label><input type="text" id="profCollege" required></div>
+                    <div class="form-field"><label>Academic Year</label><input type="text" id="profYear" required></div>
+                    <div class="form-field full"><label>Skills (Comma-separated)</label><input type="text" id="profSkills" required></div>
+                    <div class="form-field"><label>GitHub URL</label><input type="text" id="profGithub"></div>
+                    <div class="form-field"><label>LinkedIn URL</label><input type="text" id="profLinkedin"></div>
+                    <div class="form-field full"><label>Active Resume</label><input type="text" id="profResume" readonly></div>
+                    <div class="form-actions full">
+                        <button type="submit" class="btn btn-primary">Save Profile Changes</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+function loadProfile() {
+    const prof = JSON.parse(localStorage.getItem(ORBIT_KEYS.PROFILE));
+    document.getElementById('profName').value = prof.name;
+    document.getElementById('profEmail').value = prof.email;
+    document.getElementById('profPhone').value = prof.phone;
+    document.getElementById('profDept').value = prof.department;
+    document.getElementById('profCollege').value = prof.college;
+    document.getElementById('profYear').value = prof.year;
+    document.getElementById('profSkills').value = prof.skills;
+    document.getElementById('profGithub').value = prof.github;
+    document.getElementById('profLinkedin').value = prof.linkedin;
+    document.getElementById('profResume').value = prof.resumeName;
+
+    document.getElementById('cardName').textContent = prof.name;
+    document.getElementById('cardDept').textContent = `${prof.department} • ${prof.year}`;
+    document.getElementById('avatarBox').textContent = prof.name.split(' ').map(n=>n[0]).join('');
+    document.getElementById('cardSkills').innerHTML = prof.skills.split(',').map(s=>`<span class="skill">${s.trim()}</span>`).join('');
+}
+
+function saveProfile(e) {
+    e.preventDefault();
+    const updated = {
+        name: document.getElementById('profName').value,
+        email: document.getElementById('profEmail').value,
+        phone: document.getElementById('profPhone').value,
+        department: document.getElementById('profDept').value,
+        college: document.getElementById('profCollege').value,
+        year: document.getElementById('profYear').value,
+        skills: document.getElementById('profSkills').value,
+        github: document.getElementById('profGithub').value,
+        linkedin: document.getElementById('profLinkedin').value,
+        resumeName: document.getElementById('profResume').value
+    };
+    localStorage.setItem(ORBIT_KEYS.PROFILE, JSON.stringify(updated));
+    showToast('Profile updated successfully!', 'success');
+    loadProfile();
+}
+
+document.addEventListener('DOMContentLoaded', loadProfile);
+</script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORBIT Platform</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="shared-app.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-logo">O</div>
+            <div><strong>ORBIT</strong><small>ADMIN PORTAL</small></div>
+        </div>
+        <div class="nav-label">ADMINISTRATION</div>
+        <nav>
+            <a href="AdminDashboard.html">🏠 <span>Dashboard</span></a>
+            <a href="AdminUsers.html" class="active">👥 <span>Users</span></a>
+            <a href="AdminCompanies.html">🏢 <span>Companies</span></a>
+            <a href="AdminInternships.html">💼 <span>Internships</span></a>
+            <a href="AdminTraining.html">📚 <span>Training</span></a>
+            <a href="AdminReports.html">📊 <span>Reports</span></a>
+        </nav>
+        <div class="sidebar-bottom">
+            <a href="RoleDashboards.html" class="portal-link">← Role Portal</a>
+        </div>
+    </aside>
+
+    <main class="dashboard-main">
+        <header class="dashboard-topbar">
+            <div class="dashboard-title">
+                <h1>Platform User Management</h1>
+                <p>Control user access, assign roles, and activate/deactivate accounts.</p>
+            </div>
+            <div class="role-badge">⚙️ ADMINISTRATOR</div>
+        </header>
+
+        <section class="page-toolbar">
+            <div class="toolbar-filters">
+                <input type="text" id="userSearch" class="search-input" placeholder="Search user name or email..." oninput="renderAdminUsers()">
+                <select id="roleFilter" class="filter-select" onchange="renderAdminUsers()">
+                    <option value="all">All Roles</option>
+                    <option value="Student">Student</option>
+                    <option value="Manager">Manager</option>
+                    <option value="Recruiter">Recruiter</option>
+                    <option value="Training Coordinator">Training Coordinator</option>
+                    <option value="Administrator">Administrator</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" onclick="openAddUserModal()">+ Add Platform User</button>
+        </section>
+
+        <section class="panel">
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>User Name</th>
+                            <th>Email Address</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</div>
+
+<div id="userModal" class="modal-overlay" style="display:none;">
+    <div class="modal">
+        <div class="modal-header">
+            <h2>Create New System User</h2>
+            <button class="modal-close" onclick="closeUserModal()">×</button>
+        </div>
+        <form onsubmit="saveNewUser(event)" class="modal-body form-grid">
+            <div class="form-field"><label>Full Name</label><input type="text" id="uName" required></div>
+            <div class="form-field"><label>Email Address</label><input type="email" id="uEmail" required></div>
+            <div class="form-field full">
+                <label>System Role</label>
+                <select id="uRole">
+                    <option>Student</option>
+                    <option>Manager</option>
+                    <option>Recruiter</option>
+                    <option>Training Coordinator</option>
+                    <option>Administrator</option>
+                </select>
+            </div>
+            <div class="modal-footer full">
+                <button type="submit" class="btn btn-primary">Create Account</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function renderAdminUsers() {
+    const users = JSON.parse(localStorage.getItem(ORBIT_KEYS.USERS)) || [];
+    const query = document.getElementById('userSearch').value.toLowerCase();
+    const role = document.getElementById('roleFilter').value;
+
+    const filtered = users.filter(u => (u.name.toLowerCase().includes(query) || u.email.toLowerCase().includes(query)) && (role === 'all' || u.role === role));
+    const tbody = document.getElementById('usersTableBody');
+
+    tbody.innerHTML = filtered.map(u => `
+        <tr>
+            <td><span class="cell-title">${u.name}</span></td>
+            <td>${u.email}</td>
+            <td><span class="status status-info">${u.role}</span></td>
+            <td><span class="status ${u.status==='Active'?'status-success':'status-danger'}">${u.status}</span></td>
+            <td>
+                <button class="btn btn-secondary btn-sm" onclick="toggleUserStatus('${u.id}')">${u.status === 'Active' ? 'Deactivate' : 'Activate'}</button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+function openAddUserModal() { document.getElementById('userModal').style.display = 'grid'; }
+function closeUserModal() { document.getElementById('userModal').style.display = 'none'; }
+
+function saveNewUser(e) {
+    e.preventDefault();
+    const users = JSON.parse(localStorage.getItem(ORBIT_KEYS.USERS)) || [];
+    const newUser = {
+        id: 'USR-' + Math.floor(10 + Math.random()*90),
+        name: document.getElementById('uName').value,
+        email: document.getElementById('uEmail').value,
+        role: document.getElementById('uRole').value,
+        status: 'Active',
+        createdDate: new Date().toISOString().split('T')[0]
+    };
+    users.push(newUser);
+    localStorage.setItem(ORBIT_KEYS.USERS, JSON.stringify(users));
+    showToast('User created successfully!', 'success');
+    closeUserModal();
+    renderAdminUsers();
+}
+
+function toggleUserStatus(id) {
+    let users = JSON.parse(localStorage.getItem(ORBIT_KEYS.USERS)) || [];
+    const idx = users.findIndex(u => u.id === id);
+    if(idx !== -1) {
+        users[idx].status = users[idx].status === 'Active' ? 'Inactive' : 'Active';
+        localStorage.setItem(ORBIT_KEYS.USERS, JSON.stringify(users));
+        showToast('User status updated.', 'info');
+        renderAdminUsers();
+    }
+}
+
+document.addEventListener('DOMContentLoaded', renderAdminUsers);
+</script>
+</body>
+</html>

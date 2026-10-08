@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORBIT Platform</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="shared-app.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-logo">O</div>
+            <div><strong>ORBIT</strong><small>MANAGER PORTAL</small></div>
+        </div>
+        <div class="nav-label">MANAGEMENT</div>
+        <nav>
+            <a href="ManagerDashboard.html">🏠 <span>Dashboard</span></a>
+            <a href="ManagerApplications.html">📄 <span>Applications</span></a>
+            <a href="ManagerStudents.html">👥 <span>Students</span></a>
+            <a href="ManagerInternships.html">💼 <span>Internships</span></a>
+            <a href="ManagerReports.html" class="active">📊 <span>Reports</span></a>
+            <a href="ManagerNotifications.html">🔔 <span>Notifications</span></a>
+        </nav>
+        <div class="sidebar-bottom">
+            <a href="RoleDashboards.html" class="portal-link">← Role Portal</a>
+        </div>
+    </aside>
+
+    <main class="dashboard-main">
+        <header class="dashboard-topbar">
+            <div class="dashboard-title">
+                <h1>Analytics & Placement Reports</h1>
+                <p>Visual statistics detailing student selection and pipeline flow.</p>
+            </div>
+            <div class="role-badge">🧑‍💼 MANAGER</div>
+        </header>
+
+        <section class="page-toolbar no-print">
+            <button class="btn btn-primary" onclick="window.print()">🖨 Export / Print Report</button>
+        </section>
+
+        <section class="content-grid even">
+            <div class="panel">
+                <div class="panel-header"><h2>Application Pipeline Breakdown</h2></div>
+                <div class="bar-chart" id="pipelineChart"></div>
+            </div>
+            <div class="panel">
+                <div class="panel-header"><h2>Training Progress Metrics</h2></div>
+                <div class="bar-chart" id="trainingChart"></div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+function renderReports() {
+    const apps = JSON.parse(localStorage.getItem(ORBIT_KEYS.APPLICATIONS)) || [];
+    const assignments = JSON.parse(localStorage.getItem(ORBIT_KEYS.ASSIGNMENTS)) || [];
+
+    const statuses = ['Applied', 'Under Review', 'Shortlisted', 'Interview', 'Selected', 'Rejected'];
+    const totalApps = apps.length || 1;
+
+    document.getElementById('pipelineChart').innerHTML = statuses.map(s => {
+        const count = apps.filter(a => a.status === s).length;
+        const pct = Math.round((count / totalApps) * 100);
+        return `
+            <div class="bar-row">
+                <div class="bar-label">${s}</div>
+                <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
+                <div class="bar-value">${count}</div>
+            </div>
+        `;
+    }).join('');
+
+    document.getElementById('trainingChart').innerHTML = assignments.map(a => `
+        <div class="bar-row">
+            <div class="bar-label">${a.studentName}</div>
+            <div class="bar-track"><div class="bar-fill" style="width:${a.progress}%"></div></div>
+            <div class="bar-value">${a.progress}%</div>
+        </div>
+    `).join('');
+}
+document.addEventListener('DOMContentLoaded', renderReports);
+</script>
+</body>
+</html>

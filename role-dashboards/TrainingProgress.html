@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORBIT Platform</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="shared-app.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-logo">O</div>
+            <div><strong>ORBIT</strong><small>TRAINING PORTAL</small></div>
+        </div>
+        <div class="nav-label">COORDINATOR MENU</div>
+        <nav>
+            <a href="TrainingCoordinatorDashboard.html">🏠 <span>Dashboard</span></a>
+            <a href="TrainingPrograms.html">📚 <span>Programs</span></a>
+            <a href="TrainingAssignments.html">👥 <span>Assignments</span></a>
+            <a href="TrainingProgress.html" class="active">📈 <span>Progress Track</span></a>
+            <a href="TrainingCertificates.html">🏆 <span>Certificates</span></a>
+            <a href="TrainingReports.html">📊 <span>Reports</span></a>
+        </nav>
+        <div class="sidebar-bottom">
+            <a href="RoleDashboards.html" class="portal-link">← Role Portal</a>
+        </div>
+    </aside>
+
+    <main class="dashboard-main">
+        <header class="dashboard-topbar">
+            <div class="dashboard-title">
+                <h1>Progress Tracking</h1>
+                <p>Live progress meters, module milestones, and student activity logs.</p>
+            </div>
+            <div class="role-badge">📚 COORDINATOR</div>
+        </header>
+
+        <section class="panel">
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Attendance</th>
+                            <th>Completion Meter</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="progressTableBody"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+function renderProgress() {
+    const assignments = JSON.parse(localStorage.getItem(ORBIT_KEYS.ASSIGNMENTS)) || [];
+    document.getElementById('progressTableBody').innerHTML = assignments.map(a => `
+        <tr>
+            <td><span class="cell-title">${a.studentName}</span><span class="cell-sub">${a.studentEmail}</span></td>
+            <td>${a.attendance}</td>
+            <td>
+                <div class="mini-progress">
+                    <div class="progress-bar"><div class="progress-fill" style="width:${a.progress}%"></div></div>
+                    <span>${a.progress}%</span>
+                </div>
+            </td>
+            <td><span class="status ${a.progress===100?'status-success':'status-info'}">${a.progress===100?'Completed':'In Progress'}</span></td>
+        </tr>
+    `).join('');
+}
+document.addEventListener('DOMContentLoaded', renderProgress);
+</script>
+</body>
+</html>

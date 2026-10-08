@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORBIT Platform</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="shared-app.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-logo">O</div>
+            <div><strong>ORBIT</strong><small>STUDENT PORTAL</small></div>
+        </div>
+        <div class="nav-label">MAIN MENU</div>
+        <nav>
+            <a href="StudentDashboard.html">🏠 <span>Dashboard</span></a>
+            <a href="StudentInternships.html">💼 <span>Find Internships</span></a>
+            <a href="StudentApplications.html">📄 <span>My Applications</span></a>
+            <a href="StudentTraining.html" class="active">📚 <span>My Training</span></a>
+            <a href="StudentNotifications.html">🔔 <span>Notifications</span></a>
+            <a href="StudentProfile.html">👤 <span>My Profile</span></a>
+        </nav>
+        <div class="sidebar-bottom">
+            <a href="RoleDashboards.html" class="portal-link">← Role Portal</a>
+        </div>
+    </aside>
+
+    <main class="dashboard-main">
+        <header class="dashboard-topbar">
+            <div class="dashboard-title">
+                <h1>Assigned Training Programs</h1>
+                <p>Track your active courses, learning progress, and earned certificates.</p>
+            </div>
+            <div class="role-badge">🎓 STUDENT</div>
+        </header>
+
+        <section class="card-grid" id="trainingGrid"></section>
+
+        <section class="section-gap">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Earned Certificates</h2>
+                </div>
+                <div id="certificatesContainer" class="panel-body"></div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+function renderStudentTraining() {
+    const profile = JSON.parse(localStorage.getItem(ORBIT_KEYS.PROFILE));
+    const assignments = JSON.parse(localStorage.getItem(ORBIT_KEYS.ASSIGNMENTS)) || [];
+    const trainings = JSON.parse(localStorage.getItem(ORBIT_KEYS.TRAININGS)) || [];
+    const certs = JSON.parse(localStorage.getItem(ORBIT_KEYS.CERTIFICATES)) || [];
+
+    const myAssignments = assignments.filter(a => a.studentEmail === profile.email || a.studentName === profile.name);
+    const grid = document.getElementById('trainingGrid');
+
+    if (myAssignments.length === 0) {
+        grid.innerHTML = `<div class="empty-state"><div class="empty-icon">📚</div><h3>No Active Training Programs</h3><p>You have not been assigned to any training courses yet.</p></div>`;
+    } else {
+        grid.innerHTML = myAssignments.map(asg => {
+            const prog = trainings.find(t => t.id === asg.trainingId) || { name: 'Specialized Track', trainer: 'Coordinator', duration: 'N/A' };
+            return `
+                <article class="item-card">
+                    <div class="company-row">
+                        <div class="company-logo">📚</div>
+                        <div>
+                            <h3>${prog.name}</h3>
+                            <p>Instructor: ${prog.trainer}</p>
+                        </div>
+                    </div>
+                    <div class="internship-details" style="margin-top:20px;">
+                        <div class="detail-item"><span>Duration</span><strong>${prog.duration}</strong></div>
+                        <div class="detail-item"><span>Attendance</span><strong>${asg.attendance}</strong></div>
+                    </div>
+                    <div style="margin-top:20px;">
+                        <div class="progress-top"><span>Progress</span><span>${asg.progress}%</span></div>
+                        <div class="progress-bar"><div class="progress-fill" style="width:${asg.progress}%"></div></div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-secondary btn-sm" onclick="advanceProgress('${asg.id}')">Continue Course (+15%)</button>
+                    </div>
+                </article>
+            `;
+        }).join('');
+    }
+
+    const myCerts = certs.filter(c => c.studentName === profile.name);
+    const certsDiv = document.getElementById('certificatesContainer');
+    if (myCerts.length === 0) {
+        certsDiv.innerHTML = `<p class="text-muted">No completion certificates issued yet.</p>`;
+    } else {
+        certsDiv.innerHTML = myCerts.map(c => `
+            <div class="list-item">
+                <div>
+                    <strong>🏆 ${c.trainingName}</strong>
+                    <div class="item-meta">Issued Date: ${c.completionDate} • Cert ID: ${c.certificateId}</div>
+                </div>
+                <button class="btn btn-secondary btn-sm" onclick="showToast('Downloading certificate ${c.certificateId}...', 'success')">Download Certificate</button>
+            </div>
+        `).join('');
+    }
+}
+
+function advanceProgress(asgId) {
+    let assignments = JSON.parse(localStorage.getItem(ORBIT_KEYS.ASSIGNMENTS)) || [];
+    const idx = assignments.findIndex(a => a.id === asgId);
+    if (idx !== -1) {
+        assignments[idx].progress = Math.min(100, assignments[idx].progress + 15);
+        if (assignments[idx].progress === 100) assignments[idx].status = 'Completed';
+        localStorage.setItem(ORBIT_KEYS.ASSIGNMENTS, JSON.stringify(assignments));
+        showToast('Course progress updated!', 'success');
+        renderStudentTraining();
+    }
+}
+
+document.addEventListener('DOMContentLoaded', renderStudentTraining);
+</script>
+</body>
+</html>

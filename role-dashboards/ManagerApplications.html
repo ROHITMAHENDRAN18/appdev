@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORBIT Platform</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="shared-app.js"></script>
+</head>
+
+
+<body>
+
+<div class="dashboard-layout">
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+
+            <div class="sidebar-logo">
+                O
+            </div>
+
+            <div>
+
+                <strong>
+                    ORBIT
+                </strong>
+
+                <small>
+                    MANAGER PORTAL
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <div class="nav-label">
+            MANAGER MENU
+        </div>
+
+
+        <nav>
+
+            <a href="ManagerDashboard.html">
+                🏠
+                <span>Dashboard</span>
+            </a>
+
+            <a href="ManagerApplications.html">
+                  📄
+             <span>Applications</span>
+              </a>
+
+            <a href="#">
+                👨‍🎓
+                <span>Students</span>
+            </a>
+
+            <a href="#">
+                📅
+                <span>Interviews</span>
+            </a>
+
+            <a href="#">
+                📊
+                <span>Reports</span>
+            </a>
+
+            <a href="#">
+                🔔
+                <span>Notifications</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a
+                href="RoleDashboards.html"
+                class="portal-link"
+            >
+                ← Role Portal
+            </a>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- MAIN -->
+
+    <main class="dashboard-main">
+
+
+        <!-- HEADER -->
+
+        <header class="dashboard-topbar">
+
+            <div class="dashboard-title">
+
+                <h1>
+                    Internship Applications
+                </h1>
+
+                <p>
+                    Review student applications and manage
+                    recruitment decisions.
+                </p>
+
+            </div>
+
+
+            <div class="role-badge">
+                🧑‍💼 MANAGER
+            </div>
+
+        </header>
+
+
+
+        <!-- TOOLBAR -->
+
+        <section class="page-toolbar">
+
+            <div class="application-summary">
+
+                Total Applications:
+
+                <strong id="applicationCount">
+                    5
+                </strong>
+
+            </div>
+
+
+            <div class="filter-group">
+
+                <select
+                    id="statusFilter"
+                    onchange="filterApplications()"
+                >
+
+                    <option value="all">
+                        All Status
+                    </option>
+
+                    <option value="Applied">
+                        Applied
+                    </option>
+
+                    <option value="Shortlisted">
+                        Shortlisted
+                    </option>
+
+                    <option value="Interview">
+                        Interview
+                    </option>
+
+                    <option value="Rejected">
+                        Rejected
+                    </option>
+
+                </select>
+
+
+                <select
+                    id="internshipFilter"
+                    onchange="filterApplications()"
+                >
+
+                    <option value="all">
+                        All Internships
+                    </option>
+
+                    <option value="AI / ML Intern">
+                        AI / ML Intern
+                    </option>
+
+                    <option value="Machine Learning Intern">
+                        Machine Learning Intern
+                    </option>
+
+                    <option value="Data Analyst Intern">
+                        Data Analyst Intern
+                    </option>
+
+                    <option value="Frontend Developer Intern">
+                        Frontend Developer Intern
+                    </option>
+
+                </select>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- APPLICATION LIST -->
+
+        <section
+            class="manager-applications"
+            id="applicationsList"
+        >
+
+
+            <!-- APPLICATION 1 -->
+
+            <article
+                class="manager-application"
+                data-status="Applied"
+                data-role="AI / ML Intern"
+            >
+
+                <div class="application-header">
+
+                    <div class="student-info">
+
+                        <div class="student-avatar">
+                            RM
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Rahul M
+                            </h3>
+
+                            <p>
+                                B.Tech AI & Data Science
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <span
+                        class="status-badge status-applied"
+                    >
+                        Applied
+                    </span>
+
+                </div>
+
+
+                <div class="application-body">
+
+                    <h2>
+                        AI / ML Intern
+                    </h2>
+
+
+                    <div class="application-meta">
+
+                        <span>
+                            🎓 CGPA: 8.6
+                        </span>
+
+                        <span>
+                            📅 Applied: 21 Sep 2026
+                        </span>
+
+                        <span>
+                            📍 Coimbatore
+                        </span>
+
+                    </div>
+
+
+                    <div class="skills">
+
+                        <span class="skill">
+                            Python
+                        </span>
+
+                        <span class="skill">
+                            Machine Learning
+                        </span>
+
+                        <span class="skill">
+                            TensorFlow
+                        </span>
+
+                        <span class="skill">
+                            SQL
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="application-footer">
+
+                    <span class="application-id">
+                        APP-101
+                    </span>
+
+
+                    <div class="action-group">
+
+                        <button
+                            class="manager-btn details-btn"
+                            onclick="viewStudent(
+                                'Rahul M',
+                                'AI / ML Intern',
+                                '8.6',
+                                'Python, ML, TensorFlow, SQL'
+                            )"
+                        >
+                            View
+                        </button>
+
+                        <button
+                            class="manager-btn shortlist-btn"
+                            onclick="updateStatus(
+                                this,
+                                'APP-101',
+                                'Shortlisted'
+                            )"
+                        >
+                            Shortlist
+                        </button>
+
+                        <button
+                            class="manager-btn interview-btn"
+                            onclick="updateStatus(
+                                this,
+                                'APP-101',
+                                'Interview'
+                            )"
+                        >
+                            Interview
+                        </button>
+
+                        <button
+                            class="manager-btn reject-btn"
+                            onclick="updateStatus(
+                                this,
+                                'APP-101',
+                                'Rejected'
+                            )"
+                        >
+                            Reject
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- APPLICATION 2 -->
+
+            <article
+                class="manager-application"
+                data-status="Shortlisted"
+                data-role="Machine Learning Intern"
+            >
+
+                <div class="application-header">
+
+                    <div class="student-info">
+
+                        <div class="student-avatar">
+                            AK
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Ananya K
+                            </h3>
+
+                            <p>
+                                B.Tech Computer Science
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <span
+                        class="status-badge status-shortlisted"
+                    >
+                        Shortlisted
+                    </span>
+
+                </div>
+
+
+                <div class="application-body">
+
+                    <h2>
+                        Machine Learning Intern
+                    </h2>
+
+
+                    <div class="application-meta">
+
+                        <span>
+                            🎓 CGPA: 9.1
+                        </span>
+
+                        <span>
+                            📅 Applied: 19 Sep 2026
+                        </span>
+
+                        <span>
+                            📍 Bangalore
+                        </span>
+
+                    </div>
+
+
+                    <div class="skills">
+
+                        <span class="skill">
+                            Python
+                        </span>
+
+                        <span class="skill">
+                            Scikit-learn
+                        </span>
+
+                        <span class="skill">
+                            Pandas
+                        </span>
+
+                        <span class="skill">
+                            SQL
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="application-footer">
+
+                    <span class="application-id">
+                        APP-102
+                    </span>
+
+
+                    <div class="action-group">
+
+                        <button
+                            class="manager-btn details-btn"
+                            onclick="viewStudent(
+                                'Ananya K',
+                                'Machine Learning Intern',
+                                '9.1',
+                                'Python, Scikit-learn, Pandas, SQL'
+                            )"
+                        >
+                            View
+                        </button>
+
+                        <button
+                            class="manager-btn interview-btn"
+                            onclick="updateStatus(
+                                this,
+                                'APP-102',
+                                'Interview'
+                            )"
+                        >
+                            Interview
+                        </button>
+
+                        <button
+                            class="manager-btn reject-btn"
+                            onclick="updateStatus(
+                                this,
+                                'APP-102',
+                                'Rejected'
+                            )"
+                        >
+                            Reject
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- APPLICATION 3 -->
+
+            <article
+                class="manager-application"
+                data-status="Applied"
+                data-role="Data Analyst Intern"
+            >
+
+                <div class="application-header">
+
+                    <div class="student-info">
+
+                        <div class="student-avatar">
+                            VS
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Vishnu S
+                            </h3>
+
+                            <p>
+                                B.Tech Information Technology
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <span
+                        class="status-badge status-applied"
+                    >
+                        Applied
+                    </span>
+
+                </div>
+
+
+                <div class="application-body">
+
+                    <h2>
+                        Data Analyst Intern
+                    </h2>
+
+
+                    <div class="application-meta">
+
+                        <span>
+                            🎓 CGPA: 8.4
+                        </span>
+
+                        <span>
+                            📅 Applied: 20 Sep 2026
+                        </span>
+
+                        <span>
+                            📍 Chennai
+                        </span>
+
+                    </div>
+
+
+                    <div class="skills">
+
+                        <span class="skill">
+                            Python
+                        </span>
+
+                        <span class="skill">
+                            SQL
+                        </span>
+
+                        <span class="skill">
+                            Power BI
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="application-footer">
+
+                    <span class="application-id">
+                        APP-103
+                    </span>
+
+
+                    <div class="action-group">
+
+                        <button
+                            class="manager-btn details-btn"
+                            onclick="viewStudent(
+                                'Vishnu S',
+                                'Data Analyst Intern',
+                                '8.4',
+                                'Python, SQL, Power BI'
+                            )"
+                        >
+                            View
+                        </button>
+
+                        <button
+                            class="manager-btn shortlist-btn"
+                            onclick="updateStatus(
+                                this,
+                                'APP-103',
+                                'Shortlisted'
+                            )"
+                        >
+                            Shortlist
+                        </button>
+
+                        <button
+                            class="manager-btn reject-btn"
+                            onclick="updateStatus(
+                                this,
+                                'APP-103',
+                                'Rejected'
+                            )"
+                        >
+                            Reject
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- APPLICATION 4 -->
+
+            <article
+                class="manager-application"
+                data-status="Interview"
+                data-role="Frontend Developer Intern"
+            >
+
+                <div class="application-header">
+
+                    <div class="student-info">
+
+                        <div class="student-avatar">
+                            SP
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Sneha P
+                            </h3>
+
+                            <p>
+                                B.Tech AI & Data Science
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <span
+                        class="status-badge status-interview"
+                    >
+                        Interview
+                    </span>
+
+                </div>
+
+
+                <div class="application-body">
+
+                    <h2>
+                        Frontend Developer Intern
+                    </h2>
+
+
+                    <div class="application-meta">
+
+                        <span>
+                            🎓 CGPA: 8.8
+                        </span>
+
+                        <span>
+                            📅 Applied: 17 Sep 2026
+                        </span>
+
+                        <span>
+                            📍 Remote
+                        </span>
+
+                    </div>
+
+
+                    <div class="skills">
+
+                        <span class="skill">
+                            HTML
+                        </span>
+
+                        <span class="skill">
+                            CSS
+                        </span>
+
+                        <span class="skill">
+                            JavaScript
+                        </span>
+
+                        <span class="skill">
+                            React
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="application-footer">
+
+                    <span class="application-id">
+                        APP-104
+                    </span>
+
+
+                    <div class="action-group">
+
+                        <button
+                            class="manager-btn details-btn"
+                            onclick="viewStudent(
+                                'Sneha P',
+                                'Frontend Developer Intern',
+                                '8.8',
+                                'HTML, CSS, JavaScript, React'
+                            )"
+                        >
+                            View
+                        </button>
+
+                        <button
+                            class="manager-btn interview-btn"
+                            onclick="updateStatus(
+                                this,
+                                'APP-104',
+                                'Interview'
+                            )"
+                        >
+                            Interview
+                        </button>
+
+                        <button
+                            class="manager-btn reject-btn"
+                            onclick="updateStatus(
+                                this,
+                                'APP-104',
+                                'Rejected'
+                            )"
+                        >
+                            Reject
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- APPLICATION 5 -->
+
+            <article
+                class="manager-application"
+                data-status="Rejected"
+                data-role="AI / ML Intern"
+            >
+
+                <div class="application-header">
+
+                    <div class="student-info">
+
+                        <div class="student-avatar">
+                            KD
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Karthik D
+                            </h3>
+
+                            <p>
+                                B.Tech Electronics
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <span
+                        class="status-badge status-rejected"
+                    >
+                        Rejected
+                    </span>
+
+                </div>
+
+
+                <div class="application-body">
+
+                    <h2>
+                        AI / ML Intern
+                    </h2>
+
+
+                    <div class="application-meta">
+
+                        <span>
+                            🎓 CGPA: 7.5
+                        </span>
+
+                        <span>
+                            📅 Applied: 14 Sep 2026
+                        </span>
+
+                        <span>
+                            📍 Coimbatore
+                        </span>
+
+                    </div>
+
+
+                    <div class="skills">
+
+                        <span class="skill">
+                            Python
+                        </span>
+
+                        <span class="skill">
+                            Java
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="application-footer">
+
+                    <span class="application-id">
+                        APP-105
+                    </span>
+
+
+                    <div class="action-group">
+
+                        <button
+                            class="manager-btn details-btn"
+                            onclick="viewStudent(
+                                'Karthik D',
+                                'AI / ML Intern',
+                                '7.5',
+                                'Python, Java'
+                            )"
+                        >
+                            View
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+        </section>
+
+
+
+        <!-- EMPTY -->
+
+        <div
+            class="empty-state"
+            id="emptyState"
+        >
+
+            <h3>
+                No applications found
+            </h3>
+
+            <p>
+                No applications match the selected filters.
+            </p>
+
+        </div>
+
+
+
+        <!-- NOTICE -->
+
+        <div class="notice">
+
+            <strong>Frontend Prototype:</strong>
+
+            Manager decisions are currently stored only in
+            the browser. Later, these actions will update
+            application records in MongoDB.
+
+        </div>
+
+
+    </main>
+
+</div>
+
+
+
+<script>
+
+    function filterApplications() {
+
+        const selectedStatus =
+            document
+                .getElementById("statusFilter")
+                .value;
+
+
+        const selectedInternship =
+            document
+                .getElementById("internshipFilter")
+                .value;
+
+
+        const cards =
+            document.querySelectorAll(
+                ".manager-application"
+            );
+
+
+        let visibleCount = 0;
+
+
+        cards.forEach(function(card) {
+
+            const status =
+                card.getAttribute(
+                    "data-status"
+                );
+
+
+            const internship =
+                card.getAttribute(
+                    "data-role"
+                );
+
+
+            const matchesStatus =
+                selectedStatus === "all" ||
+                status === selectedStatus;
+
+
+            const matchesInternship =
+                selectedInternship === "all" ||
+                internship === selectedInternship;
+
+
+            if (
+                matchesStatus &&
+                matchesInternship
+            ) {
+
+                card.style.display = "block";
+
+                visibleCount++;
+
+            } else {
+
+                card.style.display = "none";
+
+            }
+
+        });
+
+
+        document
+            .getElementById(
+                "applicationCount"
+            )
+            .textContent =
+            visibleCount;
+
+
+        const emptyState =
+            document.getElementById(
+                "emptyState"
+            );
+
+
+        if (visibleCount === 0) {
+
+            emptyState.style.display =
+                "block";
+
+        } else {
+
+            emptyState.style.display =
+                "none";
+
+        }
+
+    }
+
+
+
+    function viewStudent(
+        student,
+        internship,
+        cgpa,
+        skills
+    ) {
+
+        alert(
+            "STUDENT APPLICATION\n\n" +
+
+            "Student: " +
+            student +
+
+            "\n\nInternship: " +
+            internship +
+
+            "\n\nCGPA: " +
+            cgpa +
+
+            "\n\nSkills: " +
+            skills
+        );
+
+    }
+
+
+
+    function updateStatus(
+        button,
+        applicationId,
+        newStatus
+    ) {
+
+        const confirmation =
+            confirm(
+                "Change " +
+                applicationId +
+                " status to " +
+                newStatus +
+                "?"
+            );
+
+
+        if (!confirmation) {
+            return;
+        }
+
+
+        const card =
+            button.closest(
+                ".manager-application"
+            );
+
+
+        card.setAttribute(
+            "data-status",
+            newStatus
+        );
+
+
+        const badge =
+            card.querySelector(
+                ".status-badge"
+            );
+
+
+        badge.textContent =
+            newStatus;
+
+
+        badge.className =
+            "status-badge " +
+            getStatusClass(newStatus);
+
+
+        saveManagerDecision(
+            applicationId,
+            newStatus
+        );
+
+
+        alert(
+            "Application " +
+            applicationId +
+            " updated to " +
+            newStatus +
+            "."
+        );
+
+
+        filterApplications();
+
+    }
+
+
+
+    function getStatusClass(status) {
+
+        if (status === "Shortlisted") {
+            return "status-shortlisted";
+        }
+
+        if (status === "Interview") {
+            return "status-interview";
+        }
+
+        if (status === "Rejected") {
+            return "status-rejected";
+        }
+
+        return "status-applied";
+
+    }
+
+
+
+    function saveManagerDecision(
+        applicationId,
+        status
+    ) {
+
+        const decisions =
+            JSON.parse(
+                localStorage.getItem(
+                    "orbitManagerDecisions"
+                ) || "{}"
+            );
+
+
+        decisions[applicationId] =
+            status;
+
+
+        localStorage.setItem(
+            "orbitManagerDecisions",
+            JSON.stringify(decisions)
+        );
+
+    }
+
+</script>
+
+
+</body>
+
+</html>

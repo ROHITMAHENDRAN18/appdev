@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORBIT Platform</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="shared-app.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-logo">O</div>
+            <div><strong>ORBIT</strong><small>TRAINING PORTAL</small></div>
+        </div>
+        <div class="nav-label">COORDINATOR MENU</div>
+        <nav>
+            <a href="TrainingCoordinatorDashboard.html" class="active">🏠 <span>Dashboard</span></a>
+            <a href="TrainingPrograms.html">📚 <span>Programs</span></a>
+            <a href="TrainingAssignments.html">👥 <span>Assignments</span></a>
+            <a href="TrainingProgress.html">📈 <span>Progress Track</span></a>
+            <a href="TrainingCertificates.html">🏆 <span>Certificates</span></a>
+            <a href="TrainingReports.html">📊 <span>Reports</span></a>
+        </nav>
+        <div class="sidebar-bottom">
+            <a href="RoleDashboards.html" class="portal-link">← Role Portal</a>
+        </div>
+    </aside>
+
+    <main class="dashboard-main">
+        <header class="dashboard-topbar">
+            <div class="dashboard-title">
+                <h1>Training Coordinator Dashboard</h1>
+                <p>Oversee skill programs, track active enrollments, and issue credentials.</p>
+            </div>
+            <div class="role-badge">📚 COORDINATOR</div>
+        </header>
+
+        <section class="stats-grid auto">
+            <div class="stat-card">
+                <div class="stat-label">Active Programs</div>
+                <div class="stat-value" id="cStatProg">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Enrolled</div>
+                <div class="stat-value" id="cStatEnrolled">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Avg Completion</div>
+                <div class="stat-value" id="cStatAvg">0%</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Certificates</div>
+                <div class="stat-value" id="cStatCerts">0</div>
+            </div>
+        </section>
+
+        <section class="content-grid even section-gap">
+            <div class="panel">
+                <div class="panel-header"><h2>Quick Actions</h2></div>
+                <div class="quick-actions">
+                    <a href="TrainingPrograms.html" class="action-btn">+ Create Training</a>
+                    <a href="TrainingAssignments.html" class="action-btn">👥 Assign Students</a>
+                    <a href="TrainingProgress.html" class="action-btn">📈 Track Progress</a>
+                    <a href="TrainingCertificates.html" class="action-btn">🏆 Manage Certificates</a>
+                    <a href="TrainingReports.html" class="action-btn">📊 Training Report</a>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+function renderCoordinatorDashboard() {
+    const trainings = JSON.parse(localStorage.getItem(ORBIT_KEYS.TRAININGS)) || [];
+    const assignments = JSON.parse(localStorage.getItem(ORBIT_KEYS.ASSIGNMENTS)) || [];
+    const certs = JSON.parse(localStorage.getItem(ORBIT_KEYS.CERTIFICATES)) || [];
+
+    document.getElementById('cStatProg').textContent = trainings.length;
+    document.getElementById('cStatEnrolled').textContent = assignments.length;
+    document.getElementById('cStatCerts').textContent = certs.length;
+
+    const avg = assignments.length ? Math.round(assignments.reduce((sum, a) => sum + a.progress, 0) / assignments.length) : 0;
+    document.getElementById('cStatAvg').textContent = avg + '%';
+}
+document.addEventListener('DOMContentLoaded', renderCoordinatorDashboard);
+</script>
+</body>
+</html>

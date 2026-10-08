@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORBIT Platform</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="shared-app.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-logo">O</div>
+            <div><strong>ORBIT</strong><small>RECRUITER PORTAL</small></div>
+        </div>
+        <div class="nav-label">RECRUITMENT</div>
+        <nav>
+            <a href="RecruiterDashboard.html">🏠 <span>Dashboard</span></a>
+            <a href="RecruiterJobs.html">💼 <span>Internships</span></a>
+            <a href="RecruiterApplications.html">📄 <span>Applicants</span></a>
+            <a href="RecruiterInterviews.html" class="active">📅 <span>Interviews</span></a>
+            <a href="RecruiterReports.html">📊 <span>Reports</span></a>
+            <a href="RecruiterNotifications.html">🔔 <span>Notifications</span></a>
+        </nav>
+        <div class="sidebar-bottom">
+            <a href="RoleDashboards.html" class="portal-link">← Role Portal</a>
+        </div>
+    </aside>
+
+    <main class="dashboard-main">
+        <header class="dashboard-topbar">
+            <div class="dashboard-title">
+                <h1>Interview Schedule</h1>
+                <p>Manage candidate interviews and technical discussions.</p>
+            </div>
+            <div class="role-badge">🏢 RECRUITER</div>
+        </header>
+
+        <section class="panel">
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Candidate</th>
+                            <th>Target Role</th>
+                            <th>Date & Time</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="interviewsTableBody"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+function renderInterviews() {
+    const apps = JSON.parse(localStorage.getItem(ORBIT_KEYS.APPLICATIONS)) || [];
+    const scheduled = apps.filter(a => a.status === 'Interview' || a.interviewDate);
+
+    const tbody = document.getElementById('interviewsTableBody');
+    if(scheduled.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" class="text-muted">No interviews currently scheduled.</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = scheduled.map(i => `
+        <tr>
+            <td><span class="cell-title">${i.studentName}</span></td>
+            <td>${i.role}</td>
+            <td><strong style="color:var(--cyan)">${i.interviewDate || 'Pending Schedule'}</strong></td>
+            <td><span class="status status-warning">${i.status}</span></td>
+        </tr>
+    `).join('');
+}
+document.addEventListener('DOMContentLoaded', renderInterviews);
+</script>
+</body>
+</html>

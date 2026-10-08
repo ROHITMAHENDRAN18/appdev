@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORBIT Platform</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="shared-app.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-logo">O</div>
+            <div><strong>ORBIT</strong><small>STUDENT PORTAL</small></div>
+        </div>
+        <div class="nav-label">MAIN MENU</div>
+        <nav>
+            <a href="StudentDashboard.html">🏠 <span>Dashboard</span></a>
+            <a href="StudentInternships.html">💼 <span>Find Internships</span></a>
+            <a href="StudentApplications.html">📄 <span>My Applications</span></a>
+            <a href="StudentTraining.html">📚 <span>My Training</span></a>
+            <a href="StudentNotifications.html" class="active">🔔 <span>Notifications</span></a>
+            <a href="StudentProfile.html">👤 <span>My Profile</span></a>
+        </nav>
+        <div class="sidebar-bottom">
+            <a href="RoleDashboards.html" class="portal-link">← Role Portal</a>
+        </div>
+    </aside>
+
+    <main class="dashboard-main">
+        <header class="dashboard-topbar">
+            <div class="dashboard-title">
+                <h1>Notifications</h1>
+                <p>System alerts, interview schedules, and evaluation updates.</p>
+            </div>
+            <div class="role-badge">🎓 STUDENT</div>
+        </header>
+
+        <section class="page-toolbar">
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="markAllRead()">Mark All as Read</button>
+                <button class="btn btn-danger" onclick="clearAllNotifications()">Clear All</button>
+            </div>
+        </section>
+
+        <section id="notificationsList" class="notification-list"></section>
+    </main>
+</div>
+
+<script>
+function renderNotifications() {
+    const notes = JSON.parse(localStorage.getItem(ORBIT_KEYS.NOTIFICATIONS)) || [];
+    const studentNotes = notes.filter(n => n.role === 'Student' || n.role === 'All');
+    const container = document.getElementById('notificationsList');
+
+    if (studentNotes.length === 0) {
+        container.innerHTML = `<div class="empty-state"><div class="empty-icon">🔔</div><h3>No Notifications</h3><p>You have no recent system notifications.</p></div>`;
+        return;
+    }
+
+    container.innerHTML = studentNotes.map(n => `
+        <div class="notification-item ${n.read ? '' : 'unread'}">
+            <div class="notification-icon">🔔</div>
+            <div class="notification-content">
+                <strong>${n.title} ${n.read ? '' : '<span class="unread-dot"></span>'}</strong>
+                <p>${n.message}</p>
+                <div class="notification-time">${n.time}</div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function markAllRead() {
+    let notes = JSON.parse(localStorage.getItem(ORBIT_KEYS.NOTIFICATIONS)) || [];
+    notes.forEach(n => { if (n.role === 'Student' || n.role === 'All') n.read = true; });
+    localStorage.setItem(ORBIT_KEYS.NOTIFICATIONS, JSON.stringify(notes));
+    showToast('All notifications marked as read', 'info');
+    renderNotifications();
+}
+
+function clearAllNotifications() {
+    let notes = JSON.parse(localStorage.getItem(ORBIT_KEYS.NOTIFICATIONS)) || [];
+    notes = notes.filter(n => n.role !== 'Student' && n.role !== 'All');
+    localStorage.setItem(ORBIT_KEYS.NOTIFICATIONS, JSON.stringify(notes));
+    showToast('Notifications cleared', 'info');
+    renderNotifications();
+}
+
+document.addEventListener('DOMContentLoaded', renderNotifications);
+</script>
+</body>
+</html>

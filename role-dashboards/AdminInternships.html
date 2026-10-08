@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORBIT Platform</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="shared-app.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-logo">O</div>
+            <div><strong>ORBIT</strong><small>ADMIN PORTAL</small></div>
+        </div>
+        <div class="nav-label">ADMINISTRATION</div>
+        <nav>
+            <a href="AdminDashboard.html">🏠 <span>Dashboard</span></a>
+            <a href="AdminUsers.html">👥 <span>Users</span></a>
+            <a href="AdminCompanies.html">🏢 <span>Companies</span></a>
+            <a href="AdminInternships.html" class="active">💼 <span>Internships</span></a>
+            <a href="AdminTraining.html">📚 <span>Training</span></a>
+            <a href="AdminReports.html">📊 <span>Reports</span></a>
+        </nav>
+        <div class="sidebar-bottom">
+            <a href="RoleDashboards.html" class="portal-link">← Role Portal</a>
+        </div>
+    </aside>
+
+    <main class="dashboard-main">
+        <header class="dashboard-topbar">
+            <div class="dashboard-title">
+                <h1>Platform Listings Moderate</h1>
+                <p>Approve, reject, or remove internship offerings across all companies.</p>
+            </div>
+            <div class="role-badge">⚙️ ADMINISTRATOR</div>
+        </header>
+
+        <section id="adminJobsGrid" class="card-grid"></section>
+    </main>
+</div>
+
+<script>
+function renderAdminJobs() {
+    const jobs = JSON.parse(localStorage.getItem(ORBIT_KEYS.INTERNSHIPS)) || [];
+    const grid = document.getElementById('adminJobsGrid');
+
+    grid.innerHTML = jobs.map(j => `
+        <article class="item-card">
+            <h3>${j.title}</h3>
+            <p>${j.company} • ${j.location}</p>
+            <div class="card-footer">
+                <span class="status status-success">${j.status}</span>
+                <button class="btn btn-danger btn-sm" onclick="removeJobAdmin('${j.id}')">Remove Listing</button>
+            </div>
+        </article>
+    `).join('');
+}
+
+function removeJobAdmin(id) {
+    let jobs = JSON.parse(localStorage.getItem(ORBIT_KEYS.INTERNSHIPS)) || [];
+    jobs = jobs.filter(j => j.id !== id);
+    localStorage.setItem(ORBIT_KEYS.INTERNSHIPS, JSON.stringify(jobs));
+    showToast('Listing removed by Administrator', 'info');
+    renderAdminJobs();
+}
+document.addEventListener('DOMContentLoaded', renderAdminJobs);
+</script>
+</body>
+</html>

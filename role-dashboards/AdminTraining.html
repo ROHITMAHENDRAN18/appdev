@@ -1,0 +1,65 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORBIT Platform</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="shared-app.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-logo">O</div>
+            <div><strong>ORBIT</strong><small>ADMIN PORTAL</small></div>
+        </div>
+        <div class="nav-label">ADMINISTRATION</div>
+        <nav>
+            <a href="AdminDashboard.html">🏠 <span>Dashboard</span></a>
+            <a href="AdminUsers.html">👥 <span>Users</span></a>
+            <a href="AdminCompanies.html">🏢 <span>Companies</span></a>
+            <a href="AdminInternships.html">💼 <span>Internships</span></a>
+            <a href="AdminTraining.html" class="active">📚 <span>Training</span></a>
+            <a href="AdminReports.html">📊 <span>Reports</span></a>
+        </nav>
+        <div class="sidebar-bottom">
+            <a href="RoleDashboards.html" class="portal-link">← Role Portal</a>
+        </div>
+    </aside>
+
+    <main class="dashboard-main">
+        <header class="dashboard-topbar">
+            <div class="dashboard-title">
+                <h1>Global Training Track Oversight</h1>
+                <p>System-wide view of active curriculum offerings and progress metrics.</p>
+            </div>
+            <div class="role-badge">⚙️ ADMINISTRATOR</div>
+        </header>
+
+        <section id="adminTrainingsGrid" class="card-grid"></section>
+    </main>
+</div>
+
+<script>
+function renderAdminTrainings() {
+    const list = JSON.parse(localStorage.getItem(ORBIT_KEYS.TRAININGS)) || [];
+    const grid = document.getElementById('adminTrainingsGrid');
+
+    grid.innerHTML = list.map(t => `
+        <article class="item-card">
+            <h3>${t.name}</h3>
+            <p>Trainer: ${t.trainer}</p>
+            <div class="internship-details" style="margin-top:15px;">
+                <div class="detail-item"><span>Duration</span><strong>${t.duration}</strong></div>
+                <div class="detail-item"><span>Status</span><strong>${t.status}</strong></div>
+            </div>
+        </article>
+    `).join('');
+}
+document.addEventListener('DOMContentLoaded', renderAdminTrainings);
+</script>
+</body>
+</html>

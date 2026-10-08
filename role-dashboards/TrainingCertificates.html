@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORBIT Platform</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="shared-app.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-logo">O</div>
+            <div><strong>ORBIT</strong><small>TRAINING PORTAL</small></div>
+        </div>
+        <div class="nav-label">COORDINATOR MENU</div>
+        <nav>
+            <a href="TrainingCoordinatorDashboard.html">🏠 <span>Dashboard</span></a>
+            <a href="TrainingPrograms.html">📚 <span>Programs</span></a>
+            <a href="TrainingAssignments.html">👥 <span>Assignments</span></a>
+            <a href="TrainingProgress.html">📈 <span>Progress Track</span></a>
+            <a href="TrainingCertificates.html" class="active">🏆 <span>Certificates</span></a>
+            <a href="TrainingReports.html">📊 <span>Reports</span></a>
+        </nav>
+        <div class="sidebar-bottom">
+            <a href="RoleDashboards.html" class="portal-link">← Role Portal</a>
+        </div>
+    </aside>
+
+    <main class="dashboard-main">
+        <header class="dashboard-topbar">
+            <div class="dashboard-title">
+                <h1>Manage & Issue Certificates</h1>
+                <p>Generate verifiable digital credentials for completed training tracks.</p>
+            </div>
+            <div class="role-badge">📚 COORDINATOR</div>
+        </header>
+
+        <section class="panel">
+            <div class="panel-header"><h2>Issue New Certificate</h2></div>
+            <form onsubmit="issueCertificate(event)" class="panel-body form-grid">
+                <div class="form-field"><label>Student Name</label><input type="text" id="certStudent" required></div>
+                <div class="form-field"><label>Course Title</label><input type="text" id="certCourse" required></div>
+                <div class="form-actions full">
+                    <button type="submit" class="btn btn-primary">Generate Certificate Credentials</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="panel section-gap">
+            <div class="panel-header"><h2>Issued Credentials Registry</h2></div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Course</th>
+                            <th>Certificate ID</th>
+                            <th>Issued Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="certsTableBody"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+function renderCerts() {
+    const certs = JSON.parse(localStorage.getItem(ORBIT_KEYS.CERTIFICATES)) || [];
+    document.getElementById('certsTableBody').innerHTML = certs.map(c => `
+        <tr>
+            <td><span class="cell-title">${c.studentName}</span></td>
+            <td>${c.trainingName}</td>
+            <td><strong style="color:var(--cyan)">${c.certificateId}</strong></td>
+            <td>${c.completionDate}</td>
+        </tr>
+    `).join('');
+}
+
+function issueCertificate(e) {
+    e.preventDefault();
+    const certs = JSON.parse(localStorage.getItem(ORBIT_KEYS.CERTIFICATES)) || [];
+    const newCert = {
+        id: 'CRT-' + Math.floor(900 + Math.random()*100),
+        studentName: document.getElementById('certStudent').value,
+        trainingName: document.getElementById('certCourse').value,
+        completionDate: new Date().toISOString().split('T')[0],
+        certificateId: 'ORB-' + Math.floor(1000 + Math.random()*9000),
+        status: 'Issued'
+    };
+    certs.push(newCert);
+    localStorage.setItem(ORBIT_KEYS.CERTIFICATES, JSON.stringify(certs));
+    showToast('Certificate generated successfully!', 'success');
+    renderCerts();
+}
+document.addEventListener('DOMContentLoaded', renderCerts);
+</script>
+</body>
+</html>

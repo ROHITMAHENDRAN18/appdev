@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORBIT Platform</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="shared-app.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-logo">O</div>
+            <div><strong>ORBIT</strong><small>TRAINING PORTAL</small></div>
+        </div>
+        <div class="nav-label">COORDINATOR MENU</div>
+        <nav>
+            <a href="TrainingCoordinatorDashboard.html">🏠 <span>Dashboard</span></a>
+            <a href="TrainingPrograms.html">📚 <span>Programs</span></a>
+            <a href="TrainingAssignments.html" class="active">👥 <span>Assignments</span></a>
+            <a href="TrainingProgress.html">📈 <span>Progress Track</span></a>
+            <a href="TrainingCertificates.html">🏆 <span>Certificates</span></a>
+            <a href="TrainingReports.html">📊 <span>Reports</span></a>
+        </nav>
+        <div class="sidebar-bottom">
+            <a href="RoleDashboards.html" class="portal-link">← Role Portal</a>
+        </div>
+    </aside>
+
+    <main class="dashboard-main">
+        <header class="dashboard-topbar">
+            <div class="dashboard-title">
+                <h1>Assign Students to Training</h1>
+                <p>Enroll students into active skill development modules.</p>
+            </div>
+            <div class="role-badge">📚 COORDINATOR</div>
+        </header>
+
+        <section class="panel">
+            <form onsubmit="assignStudent(event)" class="panel-body form-grid">
+                <div class="form-field">
+                    <label>Select Student</label>
+                    <select id="asgStudentSelect" required></select>
+                </div>
+                <div class="form-field">
+                    <label>Select Training Program</label>
+                    <select id="asgTrainingSelect" required></select>
+                </div>
+                <div class="form-actions full">
+                    <button type="submit" class="btn btn-primary">Enroll Student</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="panel section-gap">
+            <div class="panel-header"><h2>Enrolled Students</h2></div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Program ID</th>
+                            <th>Progress</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="asgTableBody"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+function initAssignForm() {
+    const users = JSON.parse(localStorage.getItem(ORBIT_KEYS.USERS)) || [];
+    const trainings = JSON.parse(localStorage.getItem(ORBIT_KEYS.TRAININGS)) || [];
+    const assignments = JSON.parse(localStorage.getItem(ORBIT_KEYS.ASSIGNMENTS)) || [];
+
+    const students = users.filter(u => u.role === 'Student');
+    const stSel = document.getElementById('asgStudentSelect');
+    const trSel = document.getElementById('asgTrainingSelect');
+
+    stSel.innerHTML = students.map(s => `<option value="${s.email}">${s.name} (${s.email})</option>`).join('');
+    trSel.innerHTML = trainings.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+
+    document.getElementById('asgTableBody').innerHTML = assignments.map(a => `
+        <tr>
+            <td>${a.studentName}</td>
+            <td>${a.trainingId}</td>
+            <td><span class="status status-info">${a.progress}%</span></td>
+            <td><button class="btn btn-danger btn-sm" onclick="removeAssignment('${a.id}')">Unenroll</button></td>
+        </tr>
+    `).join('');
+}
+
+function assignStudent(e) {
+    e.preventDefault();
+    const users = JSON.parse(localStorage.getItem(ORBIT_KEYS.USERS)) || [];
+    const assignments = JSON.parse(localStorage.getItem(ORBIT_KEYS.ASSIGNMENTS)) || [];
+
+    const email = document.getElementById('asgStudentSelect').value;
+    const trId = document.getElementById('asgTrainingSelect').value;
+    const st = users.find(u => u.email === email);
+
+    const newAsg = {
+        id: 'ASG-' + Math.floor(300 + Math.random()*700),
+        trainingId: trId,
+        studentEmail: email,
+        studentName: st ? st.name : 'Student',
+        progress: 0,
+        attendance: '100%',
+        lastActivity: new Date().toISOString().split('T')[0],
+        status: 'In Progress'
+    };
+
+    assignments.push(newAsg);
+    localStorage.setItem(ORBIT_KEYS.ASSIGNMENTS, JSON.stringify(assignments));
+    showToast('Student enrolled successfully!', 'success');
+    initAssignForm();
+}
+
+function removeAssignment(id) {
+    let assignments = JSON.parse(localStorage.getItem(ORBIT_KEYS.ASSIGNMENTS)) || [];
+    assignments = assignments.filter(a => a.id !== id);
+    localStorage.setItem(ORBIT_KEYS.ASSIGNMENTS, JSON.stringify(assignments));
+    showToast('Enrollment removed', 'info');
+    initAssignForm();
+}
+
+document.addEventListener('DOMContentLoaded', initAssignForm);
+</script>
+</body>
+</html>

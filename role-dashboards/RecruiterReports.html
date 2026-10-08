@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORBIT Platform</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="shared-app.js"></script>
+</head>
+<body>
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-logo">O</div>
+            <div><strong>ORBIT</strong><small>RECRUITER PORTAL</small></div>
+        </div>
+        <div class="nav-label">RECRUITMENT</div>
+        <nav>
+            <a href="RecruiterDashboard.html">🏠 <span>Dashboard</span></a>
+            <a href="RecruiterJobs.html">💼 <span>Internships</span></a>
+            <a href="RecruiterApplications.html">📄 <span>Applicants</span></a>
+            <a href="RecruiterInterviews.html">📅 <span>Interviews</span></a>
+            <a href="RecruiterReports.html" class="active">📊 <span>Reports</span></a>
+            <a href="RecruiterNotifications.html">🔔 <span>Notifications</span></a>
+        </nav>
+        <div class="sidebar-bottom">
+            <a href="RoleDashboards.html" class="portal-link">← Role Portal</a>
+        </div>
+    </aside>
+
+    <main class="dashboard-main">
+        <header class="dashboard-topbar">
+            <div class="dashboard-title">
+                <h1>Recruitment Metrics</h1>
+                <p>Hiring efficiency metrics and application conversion funnels.</p>
+            </div>
+            <div class="role-badge">🏢 RECRUITER</div>
+        </header>
+
+        <section class="content-grid even">
+            <div class="panel">
+                <div class="panel-header"><h2>Candidate Selection Funnel</h2></div>
+                <div class="bar-chart" id="recruiterFunnel"></div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+function renderRecruiterReports() {
+    const apps = JSON.parse(localStorage.getItem(ORBIT_KEYS.APPLICATIONS)) || [];
+    const total = apps.length || 1;
+
+    const stages = [
+        { name: 'Applications', count: total },
+        { name: 'Shortlisted', count: apps.filter(a => ['Shortlisted','Interview','Selected'].includes(a.status)).length },
+        { name: 'Interviews', count: apps.filter(a => ['Interview','Selected'].includes(a.status)).length },
+        { name: 'Hired / Selected', count: apps.filter(a => a.status === 'Selected').length }
+    ];
+
+    document.getElementById('recruiterFunnel').innerHTML = stages.map(s => `
+        <div class="bar-row">
+            <div class="bar-label">${s.name}</div>
+            <div class="bar-track"><div class="bar-fill" style="width:${Math.round((s.count/total)*100)}%"></div></div>
+            <div class="bar-value">${s.count}</div>
+        </div>
+    `).join('');
+}
+document.addEventListener('DOMContentLoaded', renderRecruiterReports);
+</script>
+</body>
+</html>
